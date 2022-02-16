@@ -11,7 +11,7 @@ export default function AddServices(props) {
     //////// Currencies & Rates ////
    let currency_sell;
    let currency_buy;
-   const CURRENCY=props.CURRENCY;
+   const CURRENCY=props.CURRENCY_Def;
   
    const RATES=props.Rates;
    const EXCHANGE_EUR_SELL=RATES.EXCHANGE_EUR_SELL;
