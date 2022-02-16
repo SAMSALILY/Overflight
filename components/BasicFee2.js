@@ -7,17 +7,17 @@ export default function BasicFee(props) {
     const [DIFF_TIME, setDIFF_TIME] = React.useState(() => props.DIFF_TIME );
     console.log("DIFF_TIME",DIFF_TIME); 
 
-    let Concession=props.Concession;
-    let BasicFee=props.BasicFee
-
+    const Concession=props.Concession_Def;
+    const BasicFee=props.BasicFee_Def;
+ 
       let TurnAround="";
 
    let BasicTTL=BasicFee+Concession;
 
 
    if (DIFF_TIME>=4){
-        TurnAround=`T/A time is ${(DIFF_TIME.toFixed(2))} hours` ;
-        
+  
+            TurnAround=`T/A time is ${(DIFF_TIME.toFixed(2))} hours` ;
    }
    let T
    let T_DESCRIPTION
@@ -50,9 +50,9 @@ export default function BasicFee(props) {
         {T_DESCRIPTION}
       </View>
       <View style={{ flex: 1}}>
-      <Text style={{fontSize:"10"}}>{BasicFee.toFixed(2)} </Text>
+      <Text style={{fontSize:"10"}}>{(+BasicFee).toFixed(2)} </Text>
        
-        <Text style={{fontSize:"10"}}>{Concession.toFixed(2)}</Text>
+        <Text style={{fontSize:"10"}}>{(+Concession).toFixed(2)}</Text>
         {T_AMOUNT}
       </View>
 
