@@ -23,42 +23,57 @@ function Invoice(props) {
 
   const [ClientDetails,setClientDetails]=useState([]);
   // const ClientID=props.Q[0].PROVIDER_CODE;
-  const ClientID=props.Q[0]
-  console.log("XXXXXXXClientID//////",ClientID)
+  const ClientID=props.Q[0];
+  // console.log("XXXXXXXClientID//////",ClientID)
   // const PROVIDER_code=ClientID[0].PROVIDER_CODE;
-  console.log("XXXXXXX ClientID[0].PROVIDER_CODE",ClientID[0].PROVIDER_CODE)
+  // console.log("XXXXXXX ClientID[0].PROVIDER_CODE",ClientID[0].PROVIDER_CODE)
   //////// Exchanges rates from DB -Table Invoice
   const [Rates,setRates]=useState([])
   
   useEffect(()=>{
+    // console.log('uuuuuuuuuuu')
+    // axios.put(`http://127.0.0.1:1501/api/put1`,ClientID[0],{ crossdomain: true }).then(
+    //     (response)=>{
+    //      console.log('sddsdsd',response.data);})
   const sendGetratesRequest = async () => {
     try {
         const resp = await axios.get('http://127.0.0.1:1501/api/invoice/get/1');
         setRates(resp.data[0]);
       console.log("resp.data[0] rates**",resp.data[0]);
+      console.log("XXXXXXX ClientID[0].PROVIDER_CODE",ClientID[0].PROVIDER_CODE)
+        
+
     } catch (err) {
       throw new Error('Unable to establish Connection with database!!');
         console.error(err);
     }
 };
-sendGetratesRequest();
 //////////////////////// Get Provider Address details
 const GetAddress = async () => {
   try {
-      const resp = await axios.get('http://127.0.0.1:1501/api/client/get/'+ClientID[0].PROVIDER_CODE);
-      setClientDetails(resp.data[0]);
-    console.log("resp.data[0] Clients**",resp.data[0]);
+      const respAddress = await axios.get('http://127.0.0.1:1501/api/client/get/'+ClientID[0].PROVIDER_CODE);
+      setClientDetails(respAddress.data[0]);
+    console.log("respAddress.data[0] Clients**",respAddress.data[0]);
   } catch (err) {
     throw new Error('Unable to establish Connection with database!!');
-      console.error(err);
-  }
+    }
 };
-GetAddress();
 //////////////////// End Provider Address details
+sendGetratesRequest();
+GetAddress();
+
+
+
+
+
+// GetAddress();
+
+
 
 },[])  ///////// End useEffect
-console.log("***/*/*/*/*/*ClientDetails.Customer_Address1",ClientDetails.Customer_Address1);
+// console.log("***/*/*/*/*/*ClientDetails.Customer_Address1",ClientDetails.Customer_Address1);
 
+// con
 console.log('Rates.EXCHANGE_EUR_SELL',Rates.EXCHANGE_EUR_SELL)
 ////////////////
   //////// serialization
@@ -309,8 +324,41 @@ default:
 // code block
 };
 
-const B=data[0][0].MTOW;
 
+const Disb_F_NBR=data[0][0].Disb_F_NBR;
+const CURRENCY_F_NBR=data[0][0].CURRENCY_F_NBR;
+const BasicFee_F_NBR=data[0][0].BasicFee_F_NBR;
+const AptConcession_F_NBR=data[0][0].AptConcession_F_NBR;
+const ConcessionH_F_NBR=data[0][0].ConcessionH_F_NBR;
+const Handling_F_NBR=data[0][0].Handling_F_NBR;
+
+
+
+
+const B=data[0][0].MTOW;
+const ID=data[0][0].ID;
+
+const ACT_ARV_DATE=data[0][0].ACT_ARV_DATE;
+const ACT_DPT_DATE=data[0][0].ACT_DPT_DATE;
+
+const IsHandling_F=data[0][0].IsHandling_F;
+const IsConcessionH_F=data[0][0].IsConcessionH_F;
+const HandlingDB=data[0][0].Handling;
+const Concession_handlerDB=data[0][0].Concession_handler;
+const Registration=data[0][0].registration;
+
+const IsCURRENCY_F=data[0][0].IsCURRENCY_F;
+const IsDisb_F=data[0][0].IsDisb_F;
+const CURRENCY_DB=data[0][0].CURRENCY;
+const Disb_DB=data[0][0].Disb;
+
+const BasicFeeDB=data[0][0].BasicFee;
+const ConcessionDB=data[0][0].Concession;
+
+const IsAptConcession_F=data[0][0].IsAptConcession_F;
+const IsBasicFee_F=data[0][0].IsBasicFee_F;
+  
+//  IsAptConcession_F={IsAptConcession_F} IsBasicFee_F={IsBasicFee_F=}
 /////////////////////////
     let OTHER_CHG1=data[0][0].OTHER_CHG1; 
     let OTHER_CHG1_AMT=data[0][0].OTHER_CHG1_AMT; 
@@ -335,18 +383,38 @@ const B=data[0][0].MTOW;
     let MEDICAL_AMT=data[0][0].MEDICAL_AMT; 
     let MEDICAL_INV=data[0][0].MEDICAL_INV;
 
-   let HANDLER=data[0][0].HANDLER; 
-   let PUSH_BACK=data[0][0].PUSH_BACK;  
+    let WCH_NBR=data[0][0].WCH_NBR;
+    let AMBU_NBR=data[0][0].AMBU_NBR; 
+    let UMNR_NBR=data[0][0].UMNR_NBR;    
+    let TOWING_NBR=data[0][0].TOWING_NBR;
+
+    let HANDLER=data[0][0].HANDLER; 
+    let PUSH_BACK=data[0][0].PUSH_BACK; 
+   
+   
    let GPU=data[0][0].GPU; 
    let GPU_TIME=data[0][0].GPU_TIME; 
+  //  let GPU_PRICE=data[0][0].GPU_PRICE;
    let ASU=data[0][0].ASU; 
-   let CUSTOMER=data[0][0].CUSTOMER;
+  //  let ASU_PRICE=data[0][0].ASU_PRICE;
+   let PROVIDER_CODE=data[0][0].PROVIDER_CODE;
    let Station=data[0][0].station;  
    let CURRENCY=data[0][0].CURRENCY; 
    let CUTE_AMT=data[0][0].CUTE_AMT;
    let FUEL_AMT=data[0][0].FUEL_AMT;
    let FUEL_INV=data[0][0].FUEL_INV;
-   let Fast_Track=data[0][0].Fast_Track;
+   let Fast_Track=data[0][0].Fast_Track; 
+   let IS_FAST_TRACK=data[0][0].IS_FAST_TRACK;
+   let JETEX_RAMP_NBR=data[0][0].JETEX_RAMP_NBR;
+   let JETEX_RAMP_AMT=data[0][0].JETEX_RAMP_AMT;
+   let VIP_ARV_PAX_NBR=data[0][0].VIP_ARV_PAX_NBR;
+   let VIP_DPT_PAX_NBR=data[0][0].VIP_DPT_PAX_NBR;
+
+   JETEX_RAMP_AMT=JETEX_RAMP_NBR*500;
+   Fast_Track=(IS_FAST_TRACK=="Y" ? 1 : 0)*3000;
+
+   let VIP_LOUNGE_ONLY=JETEX_RAMP_AMT+(VIP_ARV_PAX_NBR+VIP_DPT_PAX_NBR)*500;
+
    let CIQ_Coordination=data[0][0].CIQ_Coordination;
    let CREW_HTC_AMT=data[0][0].CREW_HTC_AMT;
    let CREW_HTC_INV=data[0][0].CREW_HTC_INV;
@@ -358,12 +426,14 @@ const B=data[0][0].MTOW;
    let PAX_TRS_INV=data[0][0].PAX_TRS_INV;
    let CATERING_AMT=data[0][0].CATERING_AMT;
    let CATERING_INV=data[0][0].CATERING_INV;
-///////////////////////////
-const Handling=data[0][0].Handling;
-const Concession_handler=data[0][0].Concession_handler;
 
-const BasicFee=data[0][0].BasicFee;
-const Concession=data[0][0].Concession;
+   
+///////////////////////////
+// const Handling=data[0][0].Handling;
+// const Concession_handler=data[0][0].Concession_handler;
+
+// const BasicFee=data[0][0].BasicFee;
+// const Concession=data[0][0].Concession;
 ///////////////////////////
 const NAT_FLT=data[0][0].NAT_FLT;
 const WO_HNDL_INV=data[0][0].WO_HNDL_INV;
@@ -383,8 +453,8 @@ const PRINT=data[0][0].PRNT_PAGES_AMT;
 let ARV_DTE=data[0][0].ARV_DTE;   
 let date=data[0][0].date;
 
-let ARV_DTE_W= new Date(ARV_DTE);
-let DEP_DTE_W= new Date(date);
+let ARV_DTE_W= new Date(ACT_ARV_DATE);
+let DEP_DTE_W= new Date(ACT_DPT_DATE);
 
 //////////// DATE ON INVOICE REF 
 let DATE_REF= new Date(date);
@@ -420,10 +490,10 @@ if (DATE_REF.getMonth()=="0"){
 let AA=data[0][0].AA; 
 let AD=data[0][0].AD;
 
-const T1=`${ARV_DTE}T${data[0][0].AA}`;
-const T2=`${date}T${data[0][0].AD}`;
+const T1=`${ACT_ARV_DATE}T${data[0][0].AA}`; console.log('ARV_DTE',ARV_DTE)
+const T2=`${ACT_DPT_DATE}T${data[0][0].AD}`;  
 
-const DIFF_TIME=(new Date(T2)-new Date(T1))/3600000;
+const DIFF_TIME=(new Date(T2)-new Date(T1))/3600000;console.log("DIF____TIME",DIFF_TIME)
 
 const COORDINATION_PERMIT=data[0][0].COORDINATION_PERMIT;
 const PERMIT=data[0][0].LND_PMT_AMT;
@@ -435,13 +505,13 @@ const Disb=data[0][0].Disb;
 ////////////////////////////////DELAY ON DEPARTURE
 
 const T_DELAY1=`${date}T${data[0][0].ED}`;
-const T_DELAY2=`${date}T${data[0][0].AD}`;
+const T_DELAY2=`${ACT_DPT_DATE}T${data[0][0].AD}`;
 
 const DELAY_TIME=(new Date(T_DELAY2)-new Date(T_DELAY1))/3600000;
 ////////////////////////////////////////
 //////////////// DELAY ON ARRIVAL
 const T_DELAY1_ARV=`${ARV_DTE}T${data[0][0].EA}`;
-const T_DELAY2_ARV=`${ARV_DTE}T${data[0][0].AA}`;
+const T_DELAY2_ARV=`${ACT_ARV_DATE}T${data[0][0].AA}`;
 const DELAY_TIME_ARV=(new Date(T_DELAY2_ARV)-new Date(T_DELAY1_ARV))/3600000;
 /////////////////////////////
 
@@ -555,7 +625,7 @@ let VAT2;
 let VAT3;
 let VAT4;
 let VAT5;
-if(CURRENCY=="MAD"){
+if(CURRENCY=="MAD" && PROVIDER_CODE=="1111"){
   VAT1=<Text style={{fontSize:"11",textAlign:"right",marginRight:"18"}}>  </Text> 
   VAT2=<Text style={{fontSize:"11",textAlign:"right",marginRight:"18"}}>VAT          : </Text>
   VAT3=<Text style={{fontSize:"10",textAlign:"right",marginRight:"18"}}> Disbursement  x 20 %</Text>
@@ -593,12 +663,857 @@ Disb_Vat= <View style={{ flexDirection: "row" }}>
     {/* <Text style={{fontSize:"11",textAlign:"right",marginRight:"18"}}>{Math.round((((OtherTTL+AirportTTL+HandlingTTL)*Disb)/100)*20)/100}</Text> */}
     {VAT5}
   </View>
-
-
 </View>;
 
 
+
+
+
+///////
+
  }
+
+ //////////////////////////////////////////
+let GPU_PRICE=0;
+let ASU_PRICE=0;
+let PUSH_PRICE=0;
+let WCH_PRICE=0;
+let UMNR_PRICE=0;
+let AMBU_PRICE=0;
+let TOWING_PRICE=0;
+let M=B;
+
+let Concession=0;
+let Handling=0;
+let BasicFee=0;
+let Concession_handler=0;
+
+ ////////////////// PUSHBACK  //////// 
+if (PUSH_BACK=="Y" ){      
+  if(PROVIDER_CODE!="999"){
+    PUSH_PRICE=M<50 ? 80 : 100;
+  }else{
+    PUSH_PRICE=100;
+  }
+}
+ ////////////////////////// A S U ////
+ if (ASU=="Y" ){
+  if(PROVIDER_CODE!="999"){
+    ASU_PRICE=M<50 ? 100 : 120;
+  }else{
+    ASU_PRICE=M<80 ? 100 : 120;
+  }    
+ }
+/////////////////////  G P U ////////// 
+ if (GPU=="Y" ){
+  if(PROVIDER_CODE!="999"){
+    GPU_PRICE=M<50 ? 80 : 100;
+  }else{
+    GPU_PRICE=M<80 ? 100 : 120;
+  }
+ }
+ /////////////////////  TOWING ////////// 
+ if (TOWING_NBR=="Y" ){
+  if(PROVIDER_CODE!="999"){
+    TOWING_PRICE=M<80 ? 180 : 300;
+  }else{
+    TOWING_PRICE=M<80 ? 180 : 300;
+  }
+ }
+////////////////////  W C H  &  UMNR   &   AMBU
+if (WCH_NBR!=0 ){WCH_PRICE=WCH_NBR*50};
+if (UMNR_NBR!=0 ){UMNR_PRICE=UMNR_NBR*50};
+if (AMBU_NBR!=0 ){AMBU_PRICE=AMBU_NBR*90};
+///////////////////////////////////////////////////
+
+console.log('H A ND LLLLLLLER',HANDLER)
+if(HANDLER=="JETEX" ){ //////// HANDLING QUOTATION JETEX AS HANDLER
+  if ((M<=7) && (M>0) ){  /////////// 01-07 T ******** JETEX EAM
+    if (Station!="GMAD") {    
+      Handling=1860;
+      Concession_handler=360;
+      BasicFee=180;
+      Concession=30; 
+    }else{
+      Handling=990;
+      Concession_handler=360;
+      BasicFee=180;
+      Concession=30;    
+    }
+  } ///////////////////////////END OF  01-07 T ******** JETEX EAM
+
+if ((M<=15) && (M>7)) {///////////START OF  07-15 T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=2465;
+    Concession_handler=360;
+    BasicFee=180;
+    Concession=30;
+  }else{
+    Handling=1650;
+    Concession_handler=360;
+    BasicFee=180;
+    Concession=30;
+  }
+}///////////END OF  07-15 T ******** JETEX EAM
+
+if ((M<=19) && (M>15)){ //////////START OF  15-19 T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=2465;
+    Concession_handler=490;
+    BasicFee=190;
+    Concession=35; 
+  }else{
+    Handling=1760;
+    Concession_handler=490;
+    BasicFee=190;
+    Concession=35; 
+  }
+}//////////END OF  15-19 T ******** JETEX EAM
+
+if ((M<=30) && (M>19)){ //////////START OF  19-30T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=3970;
+    Concession_handler=490;
+    BasicFee=190;
+    Concession=35;
+  }else{
+    Handling=3300;
+    Concession_handler=490;
+    BasicFee=190;
+    Concession=35;
+  }
+}//////////END OF  19-30T ******** JETEX EAM
+
+if ((M<=40) && (M>30)){ //////////START OF  30-40T ******** JETEX EAM
+  if(Station!="GMAD" ){
+    Handling=6280;
+    Concession_handler=840;
+    BasicFee=200;
+    Concession=40;
+  }else{
+    Handling=4565;
+    Concession_handler=840;
+    BasicFee=200;
+    Concession=40;
+  }
+} //////////END OF  30-40T ******** JETEX EAM
+
+if ((M<=50) && (M>40)){ /////////// START OF  40-50T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=6720;
+    Concession_handler=840;
+    BasicFee=250;
+    Concession=40; 
+  }else {
+    Handling=5005;
+    Concession_handler=840;
+    BasicFee=250;
+    Concession=40; 
+  }
+}/////////// END OF  40-50T ******** JETEX EAM
+
+if ((M<=60) && (M>50)){ /////////// START OF  50-60T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=7810;
+    Concession_handler=840;
+    BasicFee=250;
+    Concession=45; 
+  }else {
+    Handling=6875;
+    Concession_handler=840;
+    BasicFee=250;
+    Concession=45; 
+  }  
+}/////////// END OF  50-60T ******** JETEX EAM
+
+if ((M<=70) && (M>60)){ /////////// START OF  60-70T ******** JETEX EAM 
+  if(Station!="GMAD"){
+    Handling=10890;
+    Concession_handler=1100;
+    BasicFee=250;
+    Concession=45; 
+  }else{
+    Handling=8855;
+    Concession_handler=1100;
+    BasicFee=250;
+    Concession=45; 
+  }
+}  /////////// END OF  60-70T ******** JETEX EAM 
+
+if ((M<=80) && (M>71)){  /////////// START OF  70-80T ******** JETEX EAM 
+  if(Station!="GMAD"){
+      Handling=11495;
+      Concession_handler=1100;
+      BasicFee=250;
+    Concession=45;
+  }else{
+    Handling=9900;
+    Concession_handler=1100;
+    BasicFee=250;
+    Concession=45;
+  }
+}/////////// END OF  70-80T ******** JETEX EAM 
+
+if ((M<=100) && (M>81)){ /////////// START OF  80-100T ******** JETEX EAM 
+  if(Station!="GMAD"){
+    Handling=14190;
+    Concession_handler=1100;
+    BasicFee=300;
+    Concession=50;
+  }else{
+    Handling=10945;
+    Concession_handler=1100;
+    BasicFee=300;
+    Concession=50;
+  }
+}/////////// START OF  80-100T ******** JETEX EAM
+
+if ((M<=120) && (M>100)){ /////////// START OF  100-120T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=14545;
+    Concession_handler=1580;
+    BasicFee=300;
+    Concession=50; 
+  }else{
+    Handling=11605;
+    Concession_handler=1580;
+    BasicFee=300;
+    Concession=50; 
+  }
+}/////////// END OF  100-120T ******** JETEX EAM
+
+if ((M<=150) && (M>120)){  /////////// START OF  120-150T ******** JETEX EAM 
+  if(Station!="GMAD"){
+    Handling=18150;
+    Concession_handler=1580;
+    BasicFee=300;
+    Concession=50; 
+  }else{
+    Handling=15345;
+    Concession_handler=1580;
+    BasicFee=300;
+    Concession=50;  
+  }
+}/////////// END OF  120-150T ******** JETEX EAM 
+
+if ((M<=180) && (M>150)){ /////////// START OF  150-180T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=18150;
+    Concession_handler=1580;
+    BasicFee=350;
+  Concession=50;
+  }else{
+    Handling=15125;
+    Concession_handler=1580;
+    BasicFee=350;
+    Concession=50;
+  }
+}////////// END OF  150-180T ******** JETEX EAM
+
+if ((M<=200) && (M>180)){ /////////// START OF  180-200T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=26400;
+    Concession_handler=1580;
+    BasicFee=350;
+    Concession=50; 
+  }else{
+    Handling=24200;
+    Concession_handler=1580;
+    BasicFee=350;
+    Concession=50; 
+  }
+}/////////// END OF  180-200T ******** JETEX EAM
+
+if ((M<=230) && (M>200)){  /////////// START OF  200-230T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=26400;
+    Concession_handler=2280;
+    BasicFee=350;
+    Concession=50; 
+  }else{
+    Handling=24200;
+    Concession_handler=2280;
+    BasicFee=350;
+    Concession=50; 
+  }
+}/////////// END OF  200-230T ******** JETEX EAM
+
+if ((M<=300) && (M>230)){ /////////// START OF  230-300T ******** JETEX EAM    
+  if(Station!="GMAD"){           
+    Handling=27500;
+    Concession_handler=2280;
+    BasicFee=400;
+    Concession=50;
+  }else{
+    Handling=24695;
+    Concession_handler=2280;
+    BasicFee=400;
+    Concession=50;
+  } 
+}  /////////// END OF  230-300T ******** JETEX EAM 
+
+if (M>300){ /////////// START OF  MORE TAHN 300T ******** JETEX EAM 
+  if(Station!="GMAD"){
+    Handling=34100;
+    Concession_handler=3000;
+    BasicFee=400;
+    Concession=50;
+  }else{
+    Handling=30250;
+    Concession_handler=3000;
+    BasicFee=400;
+    Concession=50;
+  }
+}/////////// END OF  //////// HANDLING QUOTATION JETEX AS HANDLER
+
+} /////////// End if JETEX
+
+///////////////////////////////////////////////////
+
+if(PROVIDER_CODE=="1111" ){ //////// HANDLING QUOTATION JETEX EAM
+  if ((M<=7) && (M>0) ){  /////////// 01-07 T ******** JETEX EAM
+    if (Station!="GMAD") {    
+      Handling=1860;
+      Concession_handler=360;
+      BasicFee=1980;
+      Concession=300; 
+    }else{
+      Handling=990;
+      Concession_handler=360;
+      BasicFee=1980;
+      Concession=300;   
+    }
+  } ///////////////////////////END OF  01-07 T ******** JETEX EAM
+
+if ((M<=15) && (M>7)) {///////////START OF  07-15 T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=2465;
+    Concession_handler=360;
+    BasicFee=1980;
+    Concession=300;
+  }else{
+    Handling=1650;
+    Concession_handler=360;
+    BasicFee=1980;
+    Concession=300;
+  }
+}///////////END OF  07-15 T ******** JETEX EAM
+
+if ((M<=19) && (M>15)){ //////////START OF  15-19 T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=2465;
+    Concession_handler=490;
+    BasicFee=2090;
+    Concession=350;
+  }else{
+    Handling=1760;
+    Concession_handler=490;
+    BasicFee=2090;
+    Concession=350;
+  }
+}//////////END OF  15-19 T ******** JETEX EAM
+
+if ((M<=30) && (M>19)){ //////////START OF  19-30T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=3970;
+    Concession_handler=490;
+     BasicFee=2090;
+    Concession=350;
+  }else{
+    Handling=3300;
+    Concession_handler=490;
+    BasicFee=2090;
+    Concession=350;
+  }
+}//////////END OF  19-30T ******** JETEX EAM
+
+if ((M<=40) && (M>30)){ //////////START OF  30-40T ******** JETEX EAM
+  if(Station!="GMAD" ){
+    Handling=6280;
+    Concession_handler=840;
+    BasicFee=2200;
+    Concession=400;
+  }else{
+    Handling=4565;
+    Concession_handler=840;
+    BasicFee=2200;
+    Concession=400;
+  }
+} //////////END OF  30-40T ******** JETEX EAM
+
+if ((M<=50) && (M>40)){ /////////// START OF  40-50T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=6720;
+    Concession_handler=840;
+    BasicFee=2200;
+    Concession=400;
+  }else {
+    Handling=5005;
+    Concession_handler=840;
+    BasicFee=2200;
+    Concession=400;
+  }
+}/////////// END OF  40-50T ******** JETEX EAM
+
+if ((M<=60) && (M>50)){ /////////// START OF  50-60T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=7810;
+    Concession_handler=840;
+    BasicFee=2750;
+    Concession=400;
+  }else {
+    Handling=6875;
+    Concession_handler=840;
+    BasicFee=2750;
+    Concession=400;
+  }  
+}/////////// END OF  50-60T ******** JETEX EAM
+
+if ((M<=70) && (M>60)){ /////////// START OF  60-70T ******** JETEX EAM 
+  if(Station!="GMAD"){
+    Handling=10890;
+    Concession_handler=1100;
+    BasicFee=2750;
+    Concession=450;
+  }else{
+    Handling=8855;
+    Concession_handler=1100;
+    BasicFee=2750;
+    Concession=450;
+  }
+}  /////////// END OF  60-70T ******** JETEX EAM 
+
+if ((M<=80) && (M>71)){  /////////// START OF  70-80T ******** JETEX EAM 
+  if(Station!="GMAD"){
+      Handling=11495;
+      Concession_handler=1100;
+      BasicFee=2750;
+      Concession=450;
+  }else{
+    Handling=9900;
+    Concession_handler=1100;
+    BasicFee=2750;
+    Concession=450;
+  }
+}/////////// END OF  70-80T ******** JETEX EAM 
+
+if ((M<=100) && (M>81)){ /////////// START OF  80-100T ******** JETEX EAM 
+  if(Station!="GMAD"){
+    Handling=14190;
+    Concession_handler=1100;
+    BasicFee=3300;
+    Concession=450;
+  }else{
+    Handling=10945;
+    Concession_handler=1100;
+    BasicFee=3300;
+    Concession=450;
+  }
+}/////////// START OF  80-100T ******** JETEX EAM
+
+if ((M<=120) && (M>100)){ /////////// START OF  100-120T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=14545;
+    Concession_handler=1580;
+    BasicFee=3300;
+    Concession=500;
+  }else{
+    Handling=11605;
+    Concession_handler=1580;
+    BasicFee=3300;
+    Concession=500;
+  }
+}/////////// END OF  100-120T ******** JETEX EAM
+
+if ((M<=150) && (M>120)){  /////////// START OF  120-150T ******** JETEX EAM 
+  if(Station!="GMAD"){
+    Handling=18150;
+    Concession_handler=1580;
+    BasicFee=3300;
+    Concession=500;
+  }else{
+    Handling=15345;
+    Concession_handler=1580;
+    BasicFee=3300;
+    Concession=500;  
+  }
+}/////////// END OF  120-150T ******** JETEX EAM 
+
+if ((M<=180) && (M>150)){ /////////// START OF  150-180T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=18150;
+    Concession_handler=1580;
+    BasicFee=3850;
+    Concession=500;
+  }else{
+    Handling=15125;
+    Concession_handler=1580;
+    BasicFee=3850;
+    Concession=500; 
+  }
+}////////// END OF  150-180T ******** JETEX EAM
+
+if ((M<=200) && (M>180)){ /////////// START OF  180-200T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=26400;
+    Concession_handler=1580;
+    BasicFee=3850;
+    Concession=500;
+  }else{
+    Handling=24200;
+    Concession_handler=1580;
+    BasicFee=3850;
+    Concession=500; 
+  }
+}/////////// END OF  180-200T ******** JETEX EAM
+
+if ((M<=230) && (M>200)){  /////////// START OF  200-230T ******** JETEX EAM
+  if(Station!="GMAD"){
+    Handling=26400;
+    Concession_handler=2280;
+    BasicFee=3850;
+    Concession=550;
+  }else{
+    Handling=24200;
+    Concession_handler=2280;
+    BasicFee=3850;
+    Concession=550; 
+  }
+}/////////// END OF  200-230T ******** JETEX EAM
+
+if ((M<=300) && (M>230)){ /////////// START OF  230-300T ******** JETEX EAM    
+  if(Station!="GMAD"){           
+    Handling=27500;
+    Concession_handler=2280;
+    BasicFee=4400;
+    Concession=550;
+  }else{
+    Handling=24695;
+    Concession_handler=2280;
+    BasicFee=4400;
+    Concession=550;
+  } 
+}  /////////// END OF  230-300T ******** JETEX EAM 
+
+if (M>300){ /////////// START OF  MORE TAHN 300T ******** JETEX EAM 
+  if(Station!="GMAD"){
+    Handling=34100;
+    Concession_handler=3000;
+    BasicFee=4400;
+    Concession=550;
+  }else{
+    Handling=30250;
+    Concession_handler=3000;
+    BasicFee=4400;
+    Concession=550;
+  }
+}/////////// END OF  MORE TAHN 300T ******** JETEX EAM 
+
+} /////////// End if JETEX
+
+
+
+if(PROVIDER_CODE=="999" ){ ////////////// QUOTATION HANDLING ROJ
+if ((M<=40) && (M>30)){/////////////////////////// 30-40 T ****ROJ
+  Concession=35; 
+  Handling=476;
+  BasicFee=200;
+  Concession_handler=84;
+
+}///////////////////// End 30-40 T *****ROJ
+///////////////////////// 40-50 T ****ROJ
+if ((M<=50) && (M>40)){       
+  Concession=35; 
+  Handling=516;
+  BasicFee=200;
+  Concession_handler=84;
+} ///////////////////////// End 40-50 T ****ROJ
+/////////////////////  70-80 T *****ROJ 
+if ((M<=80) && (M>71)){ 
+  Concession=40; 
+  Handling=985;
+  BasicFee=250;
+  Concession_handler=110;
+}//////////////////////// End 70-80 T *****ROJ
+/////////////////////////// 230-300 T ******ROJ    
+if ((M<=300) && (M>230)){     
+  Concession=55; 
+  Handling=2347;
+  BasicFee=400;
+  Concession_handler=228;
+  
+} ///////////////////////////End 230-300 T ******ROJ
+}////////////////////// END HANDLING QUOTATION ROJ
+
+
+if(Station!="GMMN" && Station!="GMMX" && Station!="GMME"){ 
+  Fast_Track=0;
+}
+
+
+
+if((PROVIDER_CODE!="1111" && PROVIDER_CODE!="999" && HANDLER!="JETEX") && (HANDLER=="NIL" || HANDLER=="RAMH")){  ////////////// START OF STANDARDIZED HANDLING QUOTATION 
+if ((M<=7) && (M>0)){ 
+  Concession=30; 
+  Handling=169;
+  BasicFee=180;
+  Concession_handler=36;
+}
+/////////////////////////////////////////////
+if ((M<=15) && (M>7)) {   
+  Concession=30; 
+  BasicFee=180;
+  Handling=224;
+  Concession_handler=36;
+}
+//////////////////////////
+if ((M<=19) && (M>15)){ 
+  Concession=35; 
+  BasicFee=190;
+  Handling=224;
+  Concession_handler=49;
+}
+/////////////////////////
+if ((M<=30) && (M>19)){ 
+  Concession=35; 
+  BasicFee=190;
+  Handling=361;
+  Concession_handler=49;
+}
+////////////////////////////////////////////////////////
+if ((M<=40) && (M>30)){ 
+ 
+  Concession=40; 
+  BasicFee=200;
+  Handling=571;
+  Concession_handler=84;
+} 
+////////////////////////
+if ((M<=50) && (M>40)){ 
+  Concession=40;     
+  BasicFee=250;
+  Handling=611;
+  Concession_handler=84;
+}      
+//////////////////////////
+if ((M<=60) && (M>50)){ 
+  Concession=45; 
+  BasicFee=250;
+  Handling=710;
+  Concession_handler=84;
+}     
+////////////
+if ((M<=70) && (M>60)){  
+  Concession=45; 
+  BasicFee=250;
+  Handling=990;
+  Concession_handler=110;
+}
+/////////////////////////
+if ((M<=80) && (M>71)){ 
+  Concession=45; 
+  BasicFee=250;
+  Handling=1045;
+  Concession_handler=110;
+}
+////
+if ((M<=100) && (M>81)){ 
+  Concession=50; 
+  BasicFee=300;
+  Handling=1290;
+  Concession_handler=110;
+}
+//// 
+if ((M<=120) && (M>100)){
+  Concession=50; 
+  BasicFee=300;
+  Handling=1322;
+  Concession_handler=158;
+}
+////
+if ((M<=150) && (M>120)){ 
+  Concession=50; 
+  BasicFee=300;
+  Handling=1650;
+  Concession_handler=158;
+  }
+////
+if ((M<=180) && (M>150)){ 
+Concession=50; 
+BasicFee=350;
+Handling=1650;
+Concession_handler=158;
+}
+////
+if ((M<=200) && (M>180)){ 
+  Concession=50; 
+  BasicFee=350;
+  Handling=2400;
+  Concession_handler=158;
+}
+//////////////////
+if ((M<=230) && (M>200)){  
+  Concession=50; 
+  BasicFee=350;
+  Handling=2400;
+  Concession_handler=228;
+}
+////
+if ((M<=300) && (M>230)){     
+  Concession=50; 
+  BasicFee=400;
+  Handling=2500;
+  Concession_handler=228;
+}    
+////
+if (M>300){ 
+  Concession=50; 
+  BasicFee=400;
+  Handling=3100;
+  Concession_handler=300;
+}
+}  //////////////////////////// END OF STANDARIZED HANDLING QUOTATION
+
+////////////////// EXTRA GSE FOR JETEX EAM AS HANDLER//
+let VIP_AMT=0;
+if(HANDLER=="JETEX"){
+
+  if(Station=="GMMN"){
+    VIP_AMT=(VIP_ARV_PAX_NBR+VIP_DPT_PAX_NBR)*720;
+  }else if(Station=="GMMX" || Station=="GMME"){
+    VIP_AMT=(VIP_ARV_PAX_NBR+VIP_DPT_PAX_NBR)*600;
+  };  
+  
+  GPU=="Y" ? GPU_PRICE=660 : GPU_PRICE=0;
+  // GPU_PRICE=0;
+  ASU_PRICE=0;
+  PUSH_BACK=="Y" ? PUSH_PRICE=990 : PUSH_PRICE=0;
+  // PUSH_PRICE=0;
+  WCH_PRICE=WCH_NBR*400;
+  // WCH_PRICE=0;
+  UMNR_PRICE=0;
+  AMBU_PRICE=0;
+  TOWING_PRICE=0;
+}
+
+if(PROVIDER_CODE=="1111"){
+  GPU_PRICE=GPU_PRICE*11;
+  ASU_PRICE=ASU_PRICE*11;
+  PUSH_PRICE=PUSH_PRICE*11;
+  WCH_PRICE=WCH_PRICE*11;
+  UMNR_PRICE=UMNR_PRICE*11;
+  AMBU_PRICE=AMBU_PRICE*11;
+  TOWING_PRICE=TOWING_PRICE*11;
+  }
+//////////////////////////////////////
+//////  SARAH & AIR OCEAN ///////////////
+if ( PROVIDER_CODE=="5555" || PROVIDER_CODE=="8888") { 
+  Handling=160 ;
+  Concession_handler=0;
+  BasicFee=100;
+  Concession=50;
+  } ////// END OF SARAH & AIR OCEAN ///////////////
+
+if ( NAT_FLT=="TECH") { 
+Handling=Math.trunc(+(Handling/2)) ;
+Concession_handler=Math.trunc(+(Concession_handler/2)) ;
+} 
+////////////////////////
+if(HANDLER=="NIL" && PROVIDER_CODE=="1111"){Concession=550; Handling=0; Concession_handler=0;} ;
+////////////////
+
+
+
+const H=Handling;
+const HC=Concession_handler;
+const BF=BasicFee;
+const AC=Concession;
+const Dis=Disb;
+const CUR=CURRENCY;
+
+   axios.post(`http://127.0.0.1:1501/api/data/InsertHandling`,{H,HC,ID,BF,AC,Dis,CUR},{ crossdomain: true }).then(
+    (response)=>{
+    console.log('sddsdsd',response.data);});
+
+//////////////////////////////// End Handling
+
+/////////////////////  USD CLIENTS INVOICING
+if(CURRENCY=="USD"){
+  Handling=Handling*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
+  Concession_handler=Concession_handler*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
+  BasicFee=BasicFee*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
+  Concession=60;
+  console.log("Rates.EXCHANGE_USD_SELL",Rates.EXCHANGE_USD_SELL)
+}
+
+/////////////////////  END OF USD CLIENTS INVOICING
+let ConcessionH_Def;
+ConcessionH_Def= ConcessionH_F_NBR>0 ? Concession_handlerDB : Concession_handler;
+
+let Handling_Def;
+// Handling_Def= IsHandling_F>0 ? HandlingDB : Handling;
+Handling_Def= Handling_F_NBR>0 ? HandlingDB : Handling;
+
+let Concession_Def;
+Concession_Def= AptConcession_F_NBR>0 ? ConcessionDB : Concession;
+
+let BasicFee_Def;
+BasicFee_Def= BasicFee_F_NBR>0 ? BasicFeeDB : BasicFee;
+
+let CURRENCY_Def;
+CURRENCY_Def= CURRENCY_F_NBR>0 ? CURRENCY_DB : CURRENCY;
+
+let Disb_Def;
+Disb_Def= Disb_F_NBR>0 ? Disb_DB : Disb;
+
+
+let Tot;
+let Amount;
+let Letters;
+if(PROVIDER_CODE!='1111' && ClientDetails.LOCAL=="Y"){
+  
+ Tot=  <table style={{ marginRight :"14"}}>
+          <td style={{ border: 1, bordercolor: "black", backgroundColor:"lightgrey"}}>        
+             <Text style={{fontSize:"11",textAlign:"right",marginTop :"5",marginBottom :"5",marginRight :"12"}}>{`${data[0][0].CURRENCY}`}    {Total.toFixed(2)}</Text></td>
+          <td style={{ border: 1, bordercolor: "black", backgroundColor:"yellow"}}>        
+             <Text style={{fontSize:"11",textAlign:"right",marginTop :"5",marginBottom :"5",marginRight :"12"}}>{`MAD`}    {((Rates.EXCHANGE_EUR_SELL)*Total).toFixed(2)}</Text></td>
+       </table>    
+  
+ Letters=  <table style={{marginLeft:"16",marginRight:"12",marginBottom :"4"}}>            
+             <td >   
+               <Text style={{fontSize:"8",textAlign:"right",marginTop :"5",marginBottom :"5",marginRight :"2"}}>  </Text>
+             </td>  
+             <td >   
+               <Text style={{fontSize:"8",textAlign:"right",marginTop :"5",marginBottom :"5",marginRight :"2"}}>( {number2text(Total,"MAD")})</Text>
+             </td>                      
+           </table >
+ Amount=   <table >          
+              <td >
+                <Text style={{fontSize:"12",textAlign:"right",marginTop :"5",marginBottom :"5",marginRight :"2"}}></Text> 
+              </td>     
+              <td >
+                <Text style={{fontSize:"12",textAlign:"right",marginTop :"5",marginBottom :"5",marginRight :"2"}}>TOTAL :</Text> 
+              </td>                       
+           </table >
+}else {
+
+ Tot=<table style={{ marginRight :"14"}}>
+         <td style={{ border: 1, bordercolor: "black", backgroundColor:"yellow"}}>
+           <Text style={{fontSize:"11",textAlign:"right",marginTop :"5",marginBottom :"5",marginRight :"6"}}>{`${data[0][0].CURRENCY}`}    {Total.toFixed(2)}</Text>
+         </td>
+     </table> 
+ Letters=  <table style={{marginLeft:"16",marginRight:"12",marginBottom :"4"}}>            
+              <td >   
+               <Text style={{fontSize:"8",textAlign:"right",marginTop :"5",marginBottom :"5",marginRight :"2"}}>( {number2text(Total,CURRENCY)})</Text>
+             </td>                       
+           </table >  
+Amount=<table >               
+           <td ><Text style={{fontSize:"12",textAlign:"right",marginTop :"5",marginBottom :"5",marginRight :"2"}}>TOTAL :</Text> </td>
+       </table>
+   
+}
+
+
 return (
      <>
     
@@ -665,10 +1580,10 @@ return (
       </table>
       </View>
       {/* <Text style={{fontSize:"12",textAlign:"center",marginBpottom:"12"}}> </Text>  */}
-      <BasicFee2 DIFF_TIME={DIFF_TIME} BasicFee={BasicFee} Concession={Concession} BasicTTL={ttl=>setBasicTTL(ttl)}/>
+      <BasicFee2 BasicFee_Def={BasicFee_Def} Concession_Def={Concession_Def} Concession={Concession} BasicFee={BasicFee} DIFF_TIME={DIFF_TIME} BasicTTL={ttl=>setBasicTTL(ttl)}/>
       <Permit PERMIT_O_DET={PERMIT_O_DET} LND_PMT_REF={LND_PMT_REF} PERMIT={PERMIT} PERMIT_O={PERMIT_O} COORDINATION_PERMIT={COORDINATION_PERMIT} PermitTTL={ttl=>setPermitTTL(ttl)}/>
-      <AddServices CURRENCY={CURRENCY} Rates={Rates} TRAVEL={TRAVEL} CREW_ASSIST={CREW_ASSIST} PHONE={PHONE} PRINT={PRINT} AdditionalTTL={ttl=>setAdditionalTTL(ttl)}/>
-      <Surcharges BasicFee={BasicFee} DELAY_TIME_ARV={DELAY_TIME_ARV} DELAY_TIME={DELAY_TIME} DEP_DTE_W={DEP_DTE_W} ARV_DTE_W={ARV_DTE_W} AA={AA} AD={AD} B={B} SurchargeTTL={ttl=>setSurchargeTTL(ttl)} />
+      <AddServices CURRENCY_Def={CURRENCY_Def} Rates={Rates} TRAVEL={TRAVEL} CREW_ASSIST={CREW_ASSIST} PHONE={PHONE} PRINT={PRINT} AdditionalTTL={ttl=>setAdditionalTTL(ttl)}/>
+      <Surcharges BasicFee_Def={BasicFee_Def} BasicFee={BasicFee} DELAY_TIME_ARV={DELAY_TIME_ARV} DELAY_TIME={DELAY_TIME} DEP_DTE_W={DEP_DTE_W} ARV_DTE_W={ARV_DTE_W} AA={AA} AD={AD} B={B} SurchargeTTL={ttl=>setSurchargeTTL(ttl)} />
       <Subtotal1 Sub1={Sub1} SurchargeTTL={SurchargeTTL} AdditionalTTL={AdditionalTTL} PermitTTL={PermitTTL} BasicTTL={BasicTTL}/>
       
      
@@ -684,10 +1599,10 @@ return (
   
       </table>
       </View> */}
-      <AirportFees CUTE_AMT={CUTE_AMT} CURRENCY={CURRENCY} Rates={Rates} TASPT_AMT={TASPT_AMT} APT_FEES_AMT={APT_FEES_AMT} AirportTTL={ttl=>setAirportTTL(ttl)}/>
+      <AirportFees CUTE_AMT={CUTE_AMT} CURRENCY={CURRENCY_Def} Rates={Rates} TASPT_AMT={TASPT_AMT} APT_FEES_AMT={APT_FEES_AMT} AirportTTL={ttl=>setAirportTTL(ttl)}/>
       {/* <Subtotal2 AirportTTL={AirportTTL}/> */}
-      <Handling1 CURRENCY={CURRENCY} Rates={Rates} HANDLER={HANDLER} CUSTOMER={CUSTOMER} GPU_TIME={GPU_TIME} GPU={GPU} ASU={ASU} PUSH_BACK={PUSH_BACK} WO_HNDL_INV={WO_HNDL_INV} Concession_handler={Concession_handler} Handling={Handling} HandlingTTL={ttl=>setHandlingTTL(ttl)}/>
-     <Other MEDICAL_AMT={MEDICAL_AMT} MEDICAL_INV={MEDICAL_INV} OTHER_CHG4={OTHER_CHG4} OTHER_CHG4_AMT={OTHER_CHG4_AMT} OTHER_CHG4_INV={OTHER_CHG4_INV} OTHER_CHG5={OTHER_CHG5} OTHER_CHG5_AMT={OTHER_CHG5_AMT} OTHER_CHG5_INV={OTHER_CHG5_INV}  OTHER_CHG2={OTHER_CHG2} OTHER_CHG2_AMT={OTHER_CHG2_AMT} OTHER_CHG2_INV={OTHER_CHG2_INV} OTHER_CHG3={OTHER_CHG3} OTHER_CHG3_AMT={OTHER_CHG3_AMT} OTHER_CHG3_INV={OTHER_CHG3_INV} OTHER_CHG1={OTHER_CHG1} OTHER_CHG1_AMT={OTHER_CHG1_AMT} OTHER_CHG1_INV={OTHER_CHG1_INV} CURRENCY={CURRENCY} Rates={Rates} Disb={Disb} FUEL_AMT={FUEL_AMT} FUEL_INV={FUEL_INV} Fast_Track={Fast_Track} CIQ_Coordination={CIQ_Coordination} CREW_HTC_AMT={CREW_HTC_AMT} CREW_HTC_INV={CREW_HTC_INV} CREW_TRS_INV={CREW_TRS_INV} CREW_TRS_AMT={CREW_TRS_AMT} PAX_HTC_AMT={PAX_HTC_AMT} PAX_HTC_INV={PAX_HTC_INV} PAX_TRS_AMT={PAX_TRS_AMT} PAX_TRS_INV={PAX_TRS_INV} CATERING_AMT={CATERING_AMT} CATERING_INV={CATERING_INV} OtherTTL={ttl=>setOtherTTL(ttl)} />
+      <Handling1 CURRENCY_Def={CURRENCY_Def} VIP_LOUNGE_ONLY={VIP_LOUNGE_ONLY} VIP_AMT={VIP_AMT} WCH_NBR={WCH_NBR} Handling_Def={Handling_Def} ConcessionH_Def={ConcessionH_Def} GPU_PRICE={GPU_PRICE} ASU_PRICE={ASU_PRICE} PUSH_PRICE={PUSH_PRICE} WCH_PRICE={WCH_PRICE} UMNR_PRICE={UMNR_PRICE} AMBU_PRICE={AMBU_PRICE} TOWING_PRICE={TOWING_PRICE} ID={ID} Concession_handler={Concession_handler} Handling={Handling} Rates={Rates} HANDLER={HANDLER} PROVIDER_CODE={PROVIDER_CODE} WO_HNDL_INV={WO_HNDL_INV} Station={Station} NAT_FLT={NAT_FLT} CURRENCY={CURRENCY} HandlingTTL={ttl=>setHandlingTTL(ttl)}/>
+      <Other MEDICAL_AMT={MEDICAL_AMT} MEDICAL_INV={MEDICAL_INV} OTHER_CHG4={OTHER_CHG4} OTHER_CHG4_AMT={OTHER_CHG4_AMT} OTHER_CHG4_INV={OTHER_CHG4_INV} OTHER_CHG5={OTHER_CHG5} OTHER_CHG5_AMT={OTHER_CHG5_AMT} OTHER_CHG5_INV={OTHER_CHG5_INV}  OTHER_CHG2={OTHER_CHG2} OTHER_CHG2_AMT={OTHER_CHG2_AMT} OTHER_CHG2_INV={OTHER_CHG2_INV} OTHER_CHG3={OTHER_CHG3} OTHER_CHG3_AMT={OTHER_CHG3_AMT} OTHER_CHG3_INV={OTHER_CHG3_INV} OTHER_CHG1={OTHER_CHG1} OTHER_CHG1_AMT={OTHER_CHG1_AMT} OTHER_CHG1_INV={OTHER_CHG1_INV} CURRENCY={CURRENCY_Def} Rates={Rates} Disb={Disb} FUEL_AMT={FUEL_AMT} FUEL_INV={FUEL_INV} Fast_Track={Fast_Track} CIQ_Coordination={CIQ_Coordination} CREW_HTC_AMT={CREW_HTC_AMT} CREW_HTC_INV={CREW_HTC_INV} CREW_TRS_INV={CREW_TRS_INV} CREW_TRS_AMT={CREW_TRS_AMT} PAX_HTC_AMT={PAX_HTC_AMT} PAX_HTC_INV={PAX_HTC_INV} PAX_TRS_AMT={PAX_TRS_AMT} PAX_TRS_INV={PAX_TRS_INV} CATERING_AMT={CATERING_AMT} CATERING_INV={CATERING_INV} OtherTTL={ttl=>setOtherTTL(ttl)} />
     
       {S}
       {/* <View style={{ flex: 4}}> */}
@@ -805,7 +1720,7 @@ return (
     <View style={{ flexDirection: "row" }}>
       
         <View style={{ flex: 0}}>
-             <table style={{marginLeft:"16",marginRight:"12",marginBottom :"4"}}>
+             {/* <table style={{marginLeft:"16",marginRight:"12",marginBottom :"4"}}>
                
                 <td >
                 
@@ -814,10 +1729,12 @@ return (
                 </td>                           
                
               
-              </table >
+              </table > */}
+              {Letters}
         </View>
         <View style={{ flex: 4}}>
-             <table style={{marginLeft:"16",marginRight:"12",marginBottom :"4"}}>
+        {/* {Amount} */}
+             {/* <table style={{marginLeft:"16",marginRight:"12",marginBottom :"4"}}>
                
                 <td >
                 
@@ -826,21 +1743,23 @@ return (
                 </td>                           
                
               
-              </table >
+              </table > */}
+             
         </View>
          
         <View style={{ flex: 1}}>
-        <table style={{marginRight:"16",marginBottom :"4"}}>
+        {/* <table style={{marginRight:"16",marginBottom :"4"}}>
                 
                 <td style={{ border: 1, bordercolor: "black", backgroundColor:"yellow"}}>
                 
                   <Text style={{fontSize:"11",textAlign:"right",marginTop :"5",marginBottom :"5",marginRight :"6"}}>{`${data[0][0].CURRENCY}`}    {Total.toFixed(2)}</Text>
-               
+                  
                 </td>
                                
-               
+               {Moroccan}
               
-              </table >
+              </table > */}
+              {Tot}
           
         </View>
      
