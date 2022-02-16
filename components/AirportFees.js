@@ -19,7 +19,7 @@ export default function AirportFees(props) {
     const EXCHANGE_USD_BUY=RATES.EXCHANGE_USD_BUY;
     const EXCHANGE_USD_SELL=RATES.EXCHANGE_USD_SELL;
 
-    console.log('CUTE_AMT',CUTE_AMT);
+    console.log('CURENCY IN AIRPORTFEES COMP',CURRENCY);
 
     switch (CURRENCY) {
       case "EUR":
@@ -99,7 +99,8 @@ if (APT_FEES_AMT!=0) { T=<Text style={{fontSize:"10", marginLeft:"30"}}>- Landin
     T_DESCRIPTION= <Text style={{fontSize:"10"}}> -------------------------</Text>;
     T_DESCRIPTION2= <Text style={{fontSize:"10"}}> {APT_FEES}</Text>;
     // T_AMOUNT= <Text style={{fontSize:"11"}}>{(+APT_FEES_AMT/10).toFixed(2)}</Text>;
-    T_AMOUNT= <Text style={{fontSize:"10"}}>{(Math.floor((+APT_FEES_AMT/(+currency_buy)))).toFixed(2)}</Text>;
+    // T_AMOUNT= <Text style={{fontSize:"10"}}>{(Math.floor((+APT_FEES_AMT/(+currency_buy)))).toFixed(2)}</Text>;
+    T_AMOUNT= <Text style={{fontSize:"10"}}>{(+APT_FEES_AMT/(+currency_buy)).toFixed(2)}</Text>;
     AirportTTL+=APT_FEES_AMT/(+currency_buy);
    }
 
