@@ -160,28 +160,28 @@ export default function Other(props) {
 
    if (+FUEL_AMT!=0) { T2=<Text style={{fontWeight:"bold",fontSize:"10",marginLeft:"18"}}>Fuel</Text>;
    T2_DESCRIPTION= <Text style={{fontSize:"10"}}> ------------------------- </Text>;
-   T2_DESCRIPTION2= <Text style={{fontSize:"10"}}>{(+FUEL_AMT).toFixed(2)}</Text>;
+   T2_DESCRIPTION2= <Text style={{fontSize:"10"}}>{CURRENCY!="MAD" ? (+FUEL_AMT).toFixed(2):""}</Text>;
    T2_AMOUNT= <Text style={{fontSize:"10"}}>{(FUEL_AMT/(+currency_buy)).toFixed(2)}</Text>;
    OtherTTL+=(+FUEL_AMT)/(+currency_buy);
    };
 
-   if (Fast_Track!=0) { T3=<Text style={{fontWeight:"bold",fontSize:"10",marginLeft:"18"}}>Fast Track</Text>;
+   if (Fast_Track!=0) { T3=<Text style={{fontWeight:"bold",fontSize:"10",marginLeft:"18"}}>Fast Track / CIQ Coordination</Text>;
    T3_DESCRIPTION= <Text style={{fontSize:"10"}}> ------------------------- </Text>;
-   T3_DESCRIPTION2= <Text style={{fontSize:"10"}}> {(Fast_Track).toFixed(2)}</Text>;
+   T3_DESCRIPTION2= <Text style={{fontSize:"10"}}> {CURRENCY!="MAD" ? (Fast_Track).toFixed(2):""}</Text>;
    T3_AMOUNT= <Text style={{fontSize:"10"}}>{(Fast_Track/(+currency_buy)).toFixed(2)}</Text>;
    OtherTTL+=Fast_Track/(+currency_buy);
    };
 
    if (HOTAC!=0) { T4=<Text style={{fontWeight:"bold",fontSize:"10",marginLeft:"18"}}>Hotel Accomodation</Text>;
    T4_DESCRIPTION= <Text style={{fontSize:"10"}}> ------------------------- </Text>;
-   T4_DESCRIPTION2= <Text style={{fontSize:"10"}}> {(HOTAC).toFixed(2)}</Text>;
+   T4_DESCRIPTION2= <Text style={{fontSize:"10"}}> {CURRENCY!="MAD" ? (HOTAC).toFixed(2):""}</Text>;
    T4_AMOUNT= <Text style={{fontSize:"10"}}>{(HOTAC/(+currency_buy)).toFixed(2)}</Text>;
    OtherTTL+=HOTAC/(+currency_buy);
    };
 
    if (TRANS!=0) { T5=<Text style={{fontWeight:"bold",fontSize:"10",marginLeft:"18"}}>Transport To/From Hotel</Text>;
    T5_DESCRIPTION= <Text style={{fontSize:"10"}}> ------------------------- </Text>;
-   T5_DESCRIPTION2= <Text style={{fontSize:"10"}}> {(TRANS).toFixed(2)}</Text>;
+   T5_DESCRIPTION2= <Text style={{fontSize:"10"}}> {CURRENCY!="MAD" ? (TRANS).toFixed(2):""}</Text>;
    T5_AMOUNT= <Text style={{fontSize:"10"}}>{(TRANS/(+currency_buy)).toFixed(2)}</Text>;
    OtherTTL+=TRANS/(+currency_buy);
    };
