@@ -255,6 +255,10 @@ export default function Surcharges(props) {
    let T5_DESCRIPTION;
    let T5_AMOUNT;
 
+   let T6;
+   let T6_DESCRIPTION;
+   let T6_AMOUNT;
+
    let Surcharge_ttl=0;
    let compteur=0
 
@@ -279,33 +283,25 @@ export default function Surcharges(props) {
     compteur+=1;
     };
 
-    // if (+(AA[0]+AA[1])>21 || +(AA[0]+AA[1])<6 || +(AD[0]+AD[1])>21 || +(AD[0]+AD[1])<6 ) { T3=<Text style={{fontSize:"10", marginLeft:"30"}}>- Night Ops</Text>;
-    // T3_DESCRIPTION= <Text style={{fontSize:"10"}}>21h00-06h00</Text>;
-    // T3_AMOUNT= <Text style={{fontSize:"10"}}>{(0.25*BasicFee).toFixed(2)}</Text>;
-    // Surcharge_ttl +=(0.25*BasicFee);
-    // compteur+=1;
-    // };
-
-    // if ((+(AA[0]+AA[1])>6 & +(AA[0]+AA[1])<9 || +(AA[0]+AA[1])>16 & +(AA[0]+AA[1])<21) || (+(AD[0]+AD[1])>6 & +(AD[0]+AD[1])<9 || +(AD[0]+AD[1])>16 & +(AD[0]+AD[1])<21)) { T4=<Text style={{fontSize:"10", marginLeft:"30"}}>- Out of Opening hours</Text>;
-    // T4_DESCRIPTION= <Text style={{fontSize:"10"}}>"06h00 to 09h00 / 16h00 to 21h00"</Text>;
-    // T4_AMOUNT= <Text style={{fontSize:"10"}}>{(0.25*BasicFee).toFixed(2)}</Text>;
-    // Surcharge_ttl +=(0.25*BasicFee);
-    // compteur+=1;
-    // };console
-    console.log("_________AA[0]+AA[1]",+(AA[0]+AA[1])+10000)
-    if ((+(AA[0]+AA[1])>6 & +(AA[0]+AA[1])<9 & +(AA[0]+AA[1])<16 ) ||  (+(AD[0]+AD[1])>6 & +(AD[0]+AD[1])<9 & +(AD[0]+AD[1])<16 ) ) { T4=<Text style={{fontSize:"10", marginLeft:"30"}}>- Out of Opening hours</Text>;
+    if ( (AA>"06:00:00" &  AA<"09:00:00" & AA<"16:00:00" ) ||  (AD>"06:00:00" &  AD<"09:00:00" & AD<"16:00:00" ) ) { T4=<Text style={{fontSize:"10", marginLeft:"30"}}>- Out of Opening hours</Text>;
     T4_DESCRIPTION= <Text style={{fontSize:"10"}}>"06h00 to 09h00"</Text>;
     T4_AMOUNT= <Text style={{fontSize:"10"}}>{(0.25*BasicFee).toFixed(2)}</Text>;
     Surcharge_ttl +=(0.25*BasicFee);
     compteur+=1;
     };
-    if ( ( +(AA[0]+AA[1])>9 & +(AA[0]+AA[1])>16 & +(AA[0]+AA[1])<21) || ( +(AD[0]+AD[1])>9 & +(AD[0]+AD[1])>16 & +(AD[0]+AD[1])<21) ){ T4=<Text style={{fontSize:"10", marginLeft:"30"}}>- Out of Opening hours</Text>;
+
+    if ( (AA>"09:00:00" &  AA>"16:00:00" & AA<"21:00:00" ) ||  (AD>"09:00:00" &  AD>"16:00:00" & AD<"21:00:00" )){ T4=<Text style={{fontSize:"10", marginLeft:"30"}}>- Out of Opening hours</Text>;
     T4_DESCRIPTION= <Text style={{fontSize:"10"}}>"16h00 to 21h00"</Text>;
     T4_AMOUNT= <Text style={{fontSize:"10"}}>{(0.25*BasicFee).toFixed(2)}</Text>;
     Surcharge_ttl +=(0.25*BasicFee);
     compteur+=1;
     };
-    
+    if ( ((AA>"06:00:00" &  AA<"09:00:00" & AA<"16:00:00" ) ||  (AD>"06:00:00" &  AD<"09:00:00" & AD<"16:00:00" )) & ( (AA>"09:00:00" &  AA>"16:00:00" & AA<"21:00:00" ) ||  (AD>"09:00:00" &  AD>"16:00:00" & AD<"21:00:00" )) ) { T4=<Text style={{fontSize:"10", marginLeft:"30"}}>- Out of Opening hours</Text>;
+    T4_DESCRIPTION= <Text style={{fontSize:"10"}}>"06h-09h & 16h-21h"</Text>;
+    T4_AMOUNT= <Text style={{fontSize:"10"}}>{(0.25*BasicFee).toFixed(2)}</Text>;
+    Surcharge_ttl +=(0.25*BasicFee);
+    compteur+=1;
+    };
 
     if ((Holidays.indexOf(ARV_DTE_WH) !== -1) & (Holidays.indexOf(DEP_DTE_WH) !== -1) & ( DEP_DTE_WH!==ARV_DTE_WH)) { T5=<Text style={{fontSize:"10", marginLeft:"30"}}>- Holiday (National/Religious)</Text>;
     T5_DESCRIPTION= <Text style={{fontSize:"10"}}>{ARV_DTE_WH} & {DEP_DTE_WH} ({Holidays[Natures.indexOf(ARV_DTE_WH)]}) </Text>;

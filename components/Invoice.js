@@ -1390,9 +1390,9 @@ let VIP_AMT=0;
 if(HANDLER=="JETEX"){
 
   if(Station=="GMMN"){
-    VIP_AMT=(VIP_DPT_PAX_NBR)*720;
+    VIP_AMT=(VIP_DPT_PAX_NBR==0 ? VIP_ARV_PAX_NBR : VIP_DPT_PAX_NBR )*720;
   }else if(Station=="GMMX" || Station=="GMME"){
-    VIP_AMT=(VIP_DPT_PAX_NBR)*600;
+    VIP_AMT=(VIP_DPT_PAX_NBR==0 ? VIP_ARV_PAX_NBR : VIP_DPT_PAX_NBR )*600;
   };  
   
   GPU=="Y" ? GPU_PRICE=660 : GPU_PRICE=0;
