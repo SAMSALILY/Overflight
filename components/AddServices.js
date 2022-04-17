@@ -4,15 +4,18 @@ import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 export default function AddServices(props) {
 
     const [CREW_ASSIST, setCREW_ASSIST] = React.useState(() => props.CREW_ASSIST );
-    const [TRAVEL, setTRAVEL] = React.useState(() => props.TRAVEL );
+    let TRAVEL= props.TRAVEL ;
+    console.log("||||||||||| TRAVEL ADDSERVC",TRAVEL)
     const [PRINT, setPRINT] = React.useState(() => props.PRINT );
     const [PHONE, setPHONE] = React.useState(() => props.PHONE );
-
-    //////// Currencies & Rates ////
+    
+    let [PHONE_PRINT, setPHONE_PRINT] = React.useState(() => props.PHONE_PRINT);
+    //////// Currencies & Rates ////PRINT_PHONE_TOT
    let currency_sell;
    let currency_buy;
    const CURRENCY=props.CURRENCY_Def;
   
+   {{ PHONE>15 ? PHONE_PRINT=10 : PHONE_PRINT=5}}
    const RATES=props.Rates;
    const EXCHANGE_EUR_SELL=RATES.EXCHANGE_EUR_SELL;
    const EXCHANGE_EUR_BUY=RATES.EXCHANGE_EUR_BUY;
@@ -40,7 +43,7 @@ export default function AddServices(props) {
  
     if (CREW_ASSIST!=0) { T=<Text style={{fontSize:"10", marginLeft:"30"}}>- Crew/ Engineers Assistance/ Crew Swap</Text>;
     T_DESCRIPTION= <Text style={{fontSize:"10"}}> -------------------------</Text>;
-    T_AMOUNT= <Text style={{fontSize:"10"}}>{CREW_ASSIST.toFixed(2)} </Text>;
+    T_AMOUNT= <Text style={{fontSize:"10"}}>{(CREW_ASSIST).toFixed(2)} </Text>;
     Additional+=CREW_ASSIST;
     };
     let T2
@@ -48,7 +51,8 @@ export default function AddServices(props) {
    let T2_AMOUNT
    if (TRAVEL!=0) { T2=<Text style={{fontSize:"10", marginLeft:"30"}}>- Travel Expenses/ Extra time STARS Rep.</Text> ;
     T2_DESCRIPTION= <Text style={{fontSize:"10"}}> -------------------------</Text>;
-    T2_AMOUNT= <Text style={{fontSize:"10"}}>{TRAVEL.toFixed(2)} </Text>;
+    // T2_AMOUNT= <Text style={{fontSize:"10"}}>{TRAVEL.toFixed(2)} </Text>;
+    T2_AMOUNT= <Text style={{fontSize:"10"}}>{(TRAVEL).toFixed(2)} </Text>;
     Additional+=TRAVEL;
     };
 
@@ -57,10 +61,10 @@ export default function AddServices(props) {
     let T3_AMOUNT;
     
 
-    if ((PRINT+PHONE)!=0) { T3=<Text style={{fontSize:"10", marginLeft:"30"}}>- Phone / @ / Printing</Text> ;
+    if ((PHONE_PRINT)!=0) { T3=<Text style={{fontSize:"10", marginLeft:"30"}}>- Phone / @ / Printing</Text> ;
      T3_DESCRIPTION= <Text style={{fontSize:"10"}}>------------------------- </Text>;
-     T3_AMOUNT= <Text style={{fontSize:"10"}}>{(+PRINT+PHONE).toFixed(2)}</Text>;
-     Additional+=+(PRINT)+PHONE;
+     T3_AMOUNT= <Text style={{fontSize:"10"}}>{(+PHONE_PRINT).toFixed(2)}</Text>;
+     Additional+=(+PHONE_PRINT);
      };
       
       Additional = Math.floor(Additional * 100) / 100;
@@ -68,7 +72,7 @@ export default function AddServices(props) {
 
       let P;
       
-      if (CREW_ASSIST!=0 || TRAVEL!=0 || (PRINT+PHONE)!=0){P= <Text style={{fontWeight:"bold",fontSize:"11",marginLeft:"18"}}>Flight Ops Avcs/ Additional Services/ Miscellaneous charges  </Text>
+      if (CREW_ASSIST!=0 || TRAVEL!=0 || (PHONE_PRINT)!=0){P= <Text style={{fontWeight:"bold",fontSize:"11",marginLeft:"18"}}>Flight Ops Avcs/ Additional Services/ Miscellaneous charges  </Text>
       } 
 
    return (

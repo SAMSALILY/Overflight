@@ -252,18 +252,86 @@ filereader.onerror=(error)=>{
 
 promise.catch((d)=>{
 
-console.log("d[0].date+++++",d[0].date);
+ console.log("d[0]******",d[0])
+const PutFlight = async () => {
+     
+      try {
+       const resp = await axios.put("http://127.0.0.1:1501/api/put0",d[0]);
+          
+     } catch (err) {
+  throw new Error('Please check the Registration, trip or date of departure of the flight !!');
+   console.error(err);
+  
+  }
+}
+  // alert('Please press OK if the QCM is the right one :'+d[0].Registration+"-"+d[0].Trip+"-"+d[0].Station+"-"+d[0].date )
+  PutFlight();
+    ///////////////////////////  FUEL   
 
+    if(d[0].FUEL_INV!=" "){ 
+      const Fuel = async () => {  
+         try {
+           const respo = await axios.put("http://127.0.0.1:1501/api/fuel/qcm/"+d[0].Registration+"-"+d[0].Trip+"-"+d[0].Station,d[0])
+           console.log('FUEL')
+         } catch (err) {
+           throw new Error('Please check the Registration, trip or date of departure of the flight !!');
+           console.error(err)
+         }
+       }
+        Fuel();
+       } 
+          ///////////////////  END FUEL 
 
-axios.post('http://127.0.0.1:1501/api/insert', d[0])
-.then(() => {
- setItems(d);
- console.log(" d[0]", d[0]);
+ 
+  ///////////////  COR VER ---POST 
+ 
+  if(d[0].VERSION>0){
+    const PostCorver = async () => {
+      try {
+        const res = await axios.post("http://127.0.0.1:1501/api/qcm/corver",d[0]);
+        
+    } catch (err) {
+      throw new Error('Please check the Registration, trip or date of departure of the flight !!');
+      console.error(err);
+      }
+    }
+    PostCorver();
+  }
+  ///////////////////  END CORVER ---POST
+     ///////////////  FUEL  
+    // if(d[0].FUEL_INV!=""){ 
+    //   const Fuel = async () => {  
+    //    try {
+    //      const respo = await axios.post("http://127.0.0.1:1501/api/fuel/qcm", d[0])
+    //      console.log('FUEL')
+    //    } catch (err) {
+    //      throw new Error('Please check the Registration, trip or date of departure of the flight !!')
+    //      console.error(err)
+    //    }
+    //  }
+    //   Fuel();
+    // } 
+     ///////////////////  END FUEL
+  
+ 
 
-  window.open('http://127.0.0.1:1500', "_self");
-  alert("Successful Insert into Database")
-});
+  
+  // localStorage.setItem("IdKey",`${d[0].Registration}-${d[0].Trip}-${d[0].Station}-16-Dec`);
+
+  //   window.open('http://127.0.0.1:1500', "_self");
+  // alert("Successful Insert into Database")
+////////////////////////
+
+// axios.post('http://127.0.0.1:1501/api/insert', d[0])
+// .then(() => {
+//  setItems(d);
+//  console.log(" d[0]", d[0]);
+
+//   window.open('http://127.0.0.1:1500', "_self");
+//   alert("Successful Insert into Database")
+// });
 }); 
+
 };
 
 
@@ -302,15 +370,46 @@ let inf=[]
       
 //   })
 // }
+
 ///////////////
  useEffect(()=>{
       axios.get(`http://127.0.0.1:1501/api/get`,{ crossdomain: true }).then(
       (response)=>{
-       setQcm(response.data);
-    })
-  },[]);
+       setQcm(response.data);console.log("q c m",response.data);
+       
 
+       });
+       
+      
+      
   
+       
+      //  axios.get(`http://127.0.0.1:1501/api/get`,{ crossdomain: true }).then(
+      //    (response)=>{setQcm(response.data);console.log("mmmmm   response.data",response.data);}) 
+
+           
+      },[]);
+      // useEffect(()=>{
+      // axios.put(`http://127.0.0.1:1501/api/put0`,qcm[0],{ crossdomain: true }).then(
+      //   (response)=>{
+      //    console.log('sddsdsd',response.data);})
+      //   })
+      // useEffect(()=>{
+      // axios.put(`http://127.0.0.1:1501/api/put1`,qcm[0],{ crossdomain: true }).then(
+      //   (response)=>{
+      //    console.log('sddsdsd',response.data);})
+      //   },[]);
+ 
+      
+  // axios.put(`http://127.0.0.1:1501/api/put1/${qcm[1]}`,{ crossdomain: true }).then(
+  //     (response)=>{
+  //     console.log(response.data); 
+  //   });
+  ////////////////////////////  Pricing of Handling & Supervision
+  // qcm.forEach((item)=>{
+  //   console.log(item.MTOW)
+  // })
+  ///////////////////////////// End of Pricing of Handling & Supervision
 //   else{
 
 //     useEffect(()=>{
@@ -351,11 +450,15 @@ const columns = React.useMemo(
   () => [
     {
       Header:'ID',
+      accessor:'FLIGHT_ID'
+    },
+    {
+      Header:'Reg-trip-sta-Date',
       accessor:'ID'
     },
     {
-      Header:'Flight Number',
-      accessor:'flight_number',
+      Header:'Handler',
+      accessor:'HANDLER',
      
 
     },     
@@ -588,7 +691,7 @@ function invoice (){
 function update (){
  
   // window.open('https://moroccocrafts4u.retool.com/embedded/public/1137bcf9-7eea-4705-889b-278b0387dc2e', "_self")
-  window.location.replace('https://moroccocrafts4u.retool.com/embedded/public/1137bcf9-7eea-4705-889b-278b0387dc2e')
+  window.location.replace('https://starsaviationservices.retool.com/embedded/public/1137bcf9-7eea-4705-889b-278b0387dc2e')
 
   const A=[]
   for (var key in selectedRowIds) {
@@ -646,11 +749,41 @@ sendPostRequest();
 // console.log('Q[0][0].ID',Q[0][0].ID)         
 };
 
+// function SendToInvoice(){
+//   console.log("SEND TO INVOICE qcm",qcm);
+//   axios.put(`http://127.0.0.1:1501/api/put0`,qcm[0],{ crossdomain: true }).then(
+//         (response)=>{
+//          console.log('sddsdsd',response.data);})
+
+//          axios.get(`http://127.0.0.1:1501/api/get`,{ crossdomain: true }).then(
+//           (response)=>{
+//            setQcm(response.data);console.log("q c m",response.data)});       
+               
+           
+ 
+//  }
+function Action(){
+ 
+  window.open('https://moroccocrafts4u.retool.com/embedded/public/abc6bcaf-882c-4c41-b619-5995fb6461d5')
+}
+function Escale(){
+ 
+  window.open('https://moroccocrafts4u.retool.com/embedded/public/be83e2ef-a0d7-4d1d-ab03-65b8f90a8c2d')
+}
+
+function Checker(){
+ 
+  window.open('https://tce-morocco.com/checker.html')
+}
+
 function QcmCheck(){
  
   window.open('https://moroccocrafts4u.retool.com/embedded/public/da786a50-c440-4eb0-9970-87ce4df4d5e3')
 }
-
+function Occ(){
+ 
+  window.open('https://moroccocrafts4u.retool.com/embedded/public/dc047812-1024-46ae-966e-ccfa2068c3a8')
+}
 //////////////// 
 //////
 let  Button_Confirm;
@@ -659,18 +792,26 @@ if(true){
 }
   return (
     <>
-  
- 
-      
-    <input className= "button" type="file" onChange={(e)=>{
+    
+     
+    <input  className= "button" type="file" onChange={(e)=>{
         const file=e.target.files[0];
                  
         readExcel(file);             
          
     }}/>
-    <input type="submit" className="button" value="Updates " onClick={() => {update() }}/>
-    <input type="submit" className="button" value="Invoice " onClick={() => {invoice() }}/>
+   
+   <input type="submit" className="button" value="Updates " onClick={() => {update() }}/>
+    {/* <input type="submit" className="button" value="Send To Invoice " onClick={() => {SendToInvoice() }}/> */}
+    {/* <input type="submit" className="button" value="Services " onClick={() => {Occ() }}/>
+    <input type="submit" className="button" value="Flight In action " onClick={() => {Action() }}/>
     <input type="submit" className="button" value="Preliminary QCM Check " onClick={() => {QcmCheck() }}/>
+    <input type="submit" className="button" value="Updates " onClick={() => {update() }}/> */}
+    <input type="submit" className="button" value="Invoice " onClick={() => {invoice() }}/>
+    {/* <input type="submit" className="button" value="QCM Checker " onClick={() => {Checker() }}/>
+    <input type="submit" className="button" value="Flight in GMMN " onClick={() => {Escale() }}/> */}
+
+  
        <table className="table">
   <thead>
     <tr>
@@ -743,7 +884,7 @@ if(true){
         
 
       <div className="App">
-        <button onClick={() => setModalIsOpen(true)}>Open Modal</button>
+        {/* <button onClick={() => setModalIsOpen(true)}>Open Modal</button> */}
 
         <Modal
           isOpen={modalIsOpen}
@@ -760,7 +901,7 @@ if(true){
           <EditTwo  D={D}/>
           
           <div>
-            <button onClick={() => {setModalIsOpen(false); window.open('http://localhost:1500', "_self")}}>Close</button>
+            <button onClick={() => {setModalIsOpen(false); window.open('http://localhost:1500', "_self")}}>Close </button>
           </div>
         </Modal>
       </div>
@@ -769,7 +910,7 @@ if(true){
       
 
       <div className="App">
-        <button onClick={() => setModalIsOpenInvoice(true)}>Open Modal Invoice</button>
+        {/* <button onClick={() => setModalIsOpenInvoice(true)}>Open Modal Invoice</button> */}
 
         <Modal
           isOpen={modalIsOpenInvoice}
@@ -853,9 +994,9 @@ sendPostRequest();
       </div>
 
       <br />
-      <div>Showing the first 20 results of {rows.length} rows</div>
-      <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
-      <pre>
+      {/* <div>Showing the first 20 results of {rows.length} rows</div>
+      <p>Selected Rows: {Object.keys(selectedRowIds).length}</p> */}
+      {/* <pre>
         <code>
           
           {JSON.stringify(
@@ -869,7 +1010,7 @@ sendPostRequest();
             2
           )}
         </code>
-      </pre>
+      </pre> */}
     </>
   )
 

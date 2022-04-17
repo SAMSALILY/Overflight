@@ -8,7 +8,7 @@ export default function Surcharges(props) {
     const [DELAY_TIME_ARV, setDELAY_TIME_ARV] = React.useState(() => props.DELAY_TIME_ARV );
     // const [CUSTOMER, setCUSTOMER] = React.useState(() => props.CUSTOMER );
     // const [Station, setStation] = React.useState(() => props.Station );
-    const [BasicFee, setBasicFee] = React.useState(() => props.BasicFee );
+    // const [BasicFee, setBasicFee] = React.useState(() => props.BasicFee );
 
     const [ARV_DTE_W, setARV_DTE_W] = React.useState(() => props.ARV_DTE_W );
     const [DEP_DTE_W, setDEP_DTE_W] = React.useState(() => props.DEP_DTE_W );
@@ -17,13 +17,14 @@ export default function Surcharges(props) {
     const [AD, setAD] = React.useState(() => props.AD );
   
     const M=props.B ;
-   
+    const BasicFee=props.BasicFee_Def;
+
   let Delay="";
   let D_WEEK;
   let ARV_MONTH;
   let DEP_MONTH;
 
-  const Holidays=["Nov 10 2021","Nov 06 2021"]
+  const Holidays=["Jan 11 2022","Nov 06 2021"]
   const Natures=["National","Religious"]
   
   if(Holidays.indexOf("ARV_DTE_WH") !== -1){
@@ -257,14 +258,14 @@ export default function Surcharges(props) {
    let Surcharge_ttl=0;
    let compteur=0
 
-   if (DELAY_TIME_ARV>=2 & DELAY_TIME<2) { T=<Text style={{fontSize:"10", marginLeft:"30"}}>- Delay (ATA-STA) exceeding 2 hours</Text>;
+   if (DELAY_TIME_ARV>=2 && DELAY_TIME<2) { T=<Text style={{fontSize:"10", marginLeft:"30"}}>- Delay (ATA-STA) exceeding 2 hours</Text>;
    T_DESCRIPTION= <Text style={{fontSize:"10"}}>{Delay }</Text>;
    T_AMOUNT= <Text style={{fontSize:"10"}}>{(0.25*BasicFee).toFixed(2)}</Text>;
    Surcharge_ttl +=(0.25*BasicFee);
    compteur+=1;
    };
      
-    if (DELAY_TIME>=2 ) { T=<Text style={{fontSize:"10", marginLeft:"30"}}>- Delay (ATD-STD) exceeding 2 hours</Text>;
+    if (DELAY_TIME>2 ) { T=<Text style={{fontSize:"10", marginLeft:"30"}}>- Delay (ATD-STD) exceeding 2 hours</Text>;
     T_DESCRIPTION= <Text style={{fontSize:"10"}}>{Delay }</Text>;
     T_AMOUNT= <Text style={{fontSize:"10"}}>{(0.25*BasicFee).toFixed(2)}</Text>;
     Surcharge_ttl +=(0.25*BasicFee);
@@ -290,7 +291,8 @@ export default function Surcharges(props) {
     // T4_AMOUNT= <Text style={{fontSize:"10"}}>{(0.25*BasicFee).toFixed(2)}</Text>;
     // Surcharge_ttl +=(0.25*BasicFee);
     // compteur+=1;
-    // };
+    // };console
+    console.log("_________AA[0]+AA[1]",+(AA[0]+AA[1])+10000)
     if ((+(AA[0]+AA[1])>6 & +(AA[0]+AA[1])<9 & +(AA[0]+AA[1])<16 ) ||  (+(AD[0]+AD[1])>6 & +(AD[0]+AD[1])<9 & +(AD[0]+AD[1])<16 ) ) { T4=<Text style={{fontSize:"10", marginLeft:"30"}}>- Out of Opening hours</Text>;
     T4_DESCRIPTION= <Text style={{fontSize:"10"}}>"06h00 to 09h00"</Text>;
     T4_AMOUNT= <Text style={{fontSize:"10"}}>{(0.25*BasicFee).toFixed(2)}</Text>;
@@ -348,12 +350,11 @@ export default function Surcharges(props) {
     console.log("Surcharge_ttl ded Surcharge.js.toFixed(2)",Surcharge_ttl+1000)
     
       let P;
-      if (compteur!=0){
+      if (compteur!=0 ){
         P=<Text style={{fontWeight:"bold",fontSize:"12",marginLeft:"18",marginTop:"6"}}>Surcharges</Text>
       } 
       
-    //  if ((Holidays.indexOf(ARV_DTE_WH) !== -1 || Holidays.indexOf(DEP_DTE_WH) !== -1) || +(AA[0]+AA[1])>21 || +(AA[0]+AA[1])<6 || +(AD[0]+AD[1])>21 || +(AD[0]+AD[1])<6 || DELAY_TIME>=2 || isAweek || (+(AA[0]+AA[1])>=6 & +(AA[0]+AA[1])<9) || (+(AA[0]+AA[1])>=16 & +(AA[0]+AA[1])<=21) ||  ((+(AA[0]+AA[1])>6 & +(AA[0]+AA[1])<9) || (+(AA[0]+AA[1])>16 & +(AA[0]+AA[1])<21) || (+(AD[0]+AD[1])>6 & +(AD[0]+AD[1])<9) || (+(AD[0]+AD[1])>16 & +(AD[0]+AD[1])<21) )){P=<Text style={{fontWeight:"bold",fontSize:"12",marginLeft:"18",marginTop:"6"}}>Surcharges</Text>
-    //  } 
+   
  
    return (
         <div>
@@ -368,9 +369,6 @@ export default function Surcharges(props) {
         {T3}
         {T4}
         {T5} 
-      
-         {/* <Text style={{fontSize:"10", marginLeft:"30"}}>- Travel Expenses/ Extra time STARS Rep.</Text> 
-        <Text style={{fontSize:"10", marginLeft:"30"}}>- Phone / @ / Printing</Text> */}
         </View>
       <View style={{ flex: 2}}>
       {T_DESCRIPTION}
@@ -378,10 +376,7 @@ export default function Surcharges(props) {
       {T3_DESCRIPTION}
       {T4_DESCRIPTION}
       {T5_DESCRIPTION}
-     
-         {/* <Text style={{fontSize:"11"}}> </Text>
-        <Text style={{fontSize:"11"}}> </Text> */}
-        
+   
       </View>
 
       <View style={{ flex: 1}}>
@@ -391,8 +386,7 @@ export default function Surcharges(props) {
       {T4_AMOUNT}
       {T5_AMOUNT}
      
-      {/* <Text style={{fontSize:"11"}}>{TRAVEL.toFixed(2)} </Text>
-        <Text style={{fontSize:"11"}}>{BasicFee.toFixed(2)}</Text> */}
+  
       </View>
 
 </View>

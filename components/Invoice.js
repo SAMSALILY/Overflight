@@ -22,8 +22,20 @@ function Invoice(props) {
 
 
   const [ClientDetails,setClientDetails]=useState([]);
+
+  const [FuelDetails,setFuelDetails]=useState([]);
   // const ClientID=props.Q[0].PROVIDER_CODE;
   const ClientID=props.Q[0];
+  let Fuel=((ClientID[0].ID).split("/"))[1];
+  console.log("((ClientID[0].ID).split))[1]idààààààààààààààà",Fuel);
+  let Flight_ID="";
+
+  if(Fuel=="F"){
+   Flight_ID=((ClientID[0].ID).split("/"))[0];
+  }
+ 
+   
+
   // console.log("XXXXXXXClientID//////",ClientID)
   // const PROVIDER_code=ClientID[0].PROVIDER_CODE;
   // console.log("XXXXXXX ClientID[0].PROVIDER_CODE",ClientID[0].PROVIDER_CODE)
@@ -31,10 +43,23 @@ function Invoice(props) {
   const [Rates,setRates]=useState([])
   
   useEffect(()=>{
-    // console.log('uuuuuuuuuuu')
-    // axios.put(`http://127.0.0.1:1501/api/put1`,ClientID[0],{ crossdomain: true }).then(
-    //     (response)=>{
-    //      console.log('sddsdsd',response.data);})
+   
+      //////////////////////// FUEL DETAILS///////
+//       const F=Flight_ID;
+//   const GetDetailsFuel = async () => {
+//     try {
+//         const resp = await axios.get('http://127.0.0.1:1501/api/details/fuel/get/'+F);
+//         setFuelDetails(resp.data[0]);  
+//         console.log("resp.data[0] FUEL**",resp.data[0]);            
+
+//     } catch (err) {
+//       throw new Error('Unable to establish Connection with database!!');
+//         console.error(err);
+//     }
+// }; 
+
+  ////////////////////////////// END FUEL DETAILS
+     
   const sendGetratesRequest = async () => {
     try {
         const resp = await axios.get('http://127.0.0.1:1501/api/invoice/get/1');
@@ -47,7 +72,7 @@ function Invoice(props) {
       throw new Error('Unable to establish Connection with database!!');
         console.error(err);
     }
-};
+ };
 //////////////////////// Get Provider Address details
 const GetAddress = async () => {
   try {
@@ -59,8 +84,10 @@ const GetAddress = async () => {
     }
 };
 //////////////////// End Provider Address details
+
 sendGetratesRequest();
 GetAddress();
+// GetDetailsFuel();
 
 
 
@@ -71,29 +98,9 @@ GetAddress();
 
 
 },[])  ///////// End useEffect
-// console.log("***/*/*/*/*/*ClientDetails.Customer_Address1",ClientDetails.Customer_Address1);
 
-// con
-console.log('Rates.EXCHANGE_EUR_SELL',Rates.EXCHANGE_EUR_SELL)
-////////////////
-  //////// serialization
-//   const [InvoiceNumber,setInvoiceNumber]=useState([])
-//   useEffect(()=>{
-//   const sendGetRequest = async () => {
-//     try {
-//         const resp = await axios.get('http://127.0.0.1:1501/api/invoice/get/1');
-//         setInvoiceNumber(resp.data[0].ID);
-//       console.log("resp.data[0].ID*******",resp.data[0].ID);
-//     } catch (err) {
-//       throw new Error('Unable to establish Connection with database!!');
-//         console.error(err);
-//     }
-// };
-// sendGetRequest();
-// },[])
 
-// console.log('InvoiceNumber',InvoiceNumber)
-/////////////////
+
 
   function number2text(value,currency) {
   let cur;
@@ -257,7 +264,7 @@ var tens = Array("", "", "TWENTY", "THIRTY", "FOURTY", "FIFTY", "SIXTY","SEVENTY
      console.log("data[0]",data[0])
 
       let sita=""
-     switch(data[0][0].station) {
+    switch (data[0][0].station) {
 case "GMAD":
   sita="AGA"
 break;
@@ -357,7 +364,8 @@ const ConcessionDB=data[0][0].Concession;
 
 const IsAptConcession_F=data[0][0].IsAptConcession_F;
 const IsBasicFee_F=data[0][0].IsBasicFee_F;
-  
+
+const PMT_BY_STARS=data[0][0].PMT_BY_STARS;
 //  IsAptConcession_F={IsAptConcession_F} IsBasicFee_F={IsBasicFee_F=}
 /////////////////////////
     let OTHER_CHG1=data[0][0].OTHER_CHG1; 
@@ -405,13 +413,15 @@ const IsBasicFee_F=data[0][0].IsBasicFee_F;
    let FUEL_INV=data[0][0].FUEL_INV;
    let Fast_Track=data[0][0].Fast_Track; 
    let IS_FAST_TRACK=data[0][0].IS_FAST_TRACK;
-   let JETEX_RAMP_NBR=data[0][0].JETEX_RAMP_NBR;
+   let JETEX_RAMP_ARV_NBR=data[0][0].JETEX_RAMP_ARV_NBR;
+   let JETEX_RAMP_DPT_NBR=data[0][0].JETEX_RAMP_DPT_NBR;
    let JETEX_RAMP_AMT=data[0][0].JETEX_RAMP_AMT;
    let VIP_ARV_PAX_NBR=data[0][0].VIP_ARV_PAX_NBR;
    let VIP_DPT_PAX_NBR=data[0][0].VIP_DPT_PAX_NBR;
 
-   JETEX_RAMP_AMT=JETEX_RAMP_NBR*500;
-   Fast_Track=(IS_FAST_TRACK=="Y" ? 1 : 0)*3000;
+   JETEX_RAMP_AMT=(JETEX_RAMP_DPT_NBR+JETEX_RAMP_ARV_NBR)*500;
+
+      Fast_Track=(IS_FAST_TRACK=="Y" ? 1 : 0)*3000;
 
    let VIP_LOUNGE_ONLY=JETEX_RAMP_AMT+(VIP_ARV_PAX_NBR+VIP_DPT_PAX_NBR)*500;
 
@@ -445,9 +455,10 @@ APT_FEES_AMT=(+data[0][0].APT_FEES_AMT).toFixed(2);
 TASPT_AMT=(+data[0][0].TASPT_AMT).toFixed(2);
 
 const CREW_ASSIST=data[0][0].CREW_ASSIST;
-const TRAVEL=data[0][0].TRVL_EXP_AMT;
+let TRAVEL=data[0][0].TRVL_EXP_AMT;
 const PHONE=data[0][0].PHONE_COM_AMT;
 const PRINT=data[0][0].PRNT_PAGES_AMT;
+let PHONE_PRINT=data[0][0].PHONE_PRINT;
 ///////////////////////////////////
 
 let ARV_DTE=data[0][0].ARV_DTE;   
@@ -497,8 +508,8 @@ const DIFF_TIME=(new Date(T2)-new Date(T1))/3600000;console.log("DIF____TIME",DI
 
 const COORDINATION_PERMIT=data[0][0].COORDINATION_PERMIT;
 const PERMIT=data[0][0].LND_PMT_AMT;
-const PERMIT_O=data[0][0].PERMIT_O;
-const LND_PMT_REF=data[0][0].LND_PMT_REF;
+const IS_PMT_OUT=data[0][0].IS_PMT_OUT;
+const PMT_REF=data[0][0].PMT_REF;
 const PERMIT_O_DET=data[0][0].PERMIT_O_DET;
 
 const Disb=data[0][0].Disb;
@@ -625,7 +636,7 @@ let VAT2;
 let VAT3;
 let VAT4;
 let VAT5;
-if(CURRENCY=="MAD" && PROVIDER_CODE=="1111"){
+if(CURRENCY=="MAD" && PROVIDER_CODE=="2417"){
   VAT1=<Text style={{fontSize:"11",textAlign:"right",marginRight:"18"}}>  </Text> 
   VAT2=<Text style={{fontSize:"11",textAlign:"right",marginRight:"18"}}>VAT          : </Text>
   VAT3=<Text style={{fontSize:"10",textAlign:"right",marginRight:"18"}}> Disbursement  x 20 %</Text>
@@ -690,7 +701,7 @@ let Concession_handler=0;
 
  ////////////////// PUSHBACK  //////// 
 if (PUSH_BACK=="Y" ){      
-  if(PROVIDER_CODE!="999"){
+  if(PROVIDER_CODE!="0456"){
     PUSH_PRICE=M<50 ? 80 : 100;
   }else{
     PUSH_PRICE=100;
@@ -698,7 +709,7 @@ if (PUSH_BACK=="Y" ){
 }
  ////////////////////////// A S U ////
  if (ASU=="Y" ){
-  if(PROVIDER_CODE!="999"){
+  if(PROVIDER_CODE!="0456"){
     ASU_PRICE=M<50 ? 100 : 120;
   }else{
     ASU_PRICE=M<80 ? 100 : 120;
@@ -706,7 +717,7 @@ if (PUSH_BACK=="Y" ){
  }
 /////////////////////  G P U ////////// 
  if (GPU=="Y" ){
-  if(PROVIDER_CODE!="999"){
+  if(PROVIDER_CODE!="0456"){
     GPU_PRICE=M<50 ? 80 : 100;
   }else{
     GPU_PRICE=M<80 ? 100 : 120;
@@ -714,7 +725,7 @@ if (PUSH_BACK=="Y" ){
  }
  /////////////////////  TOWING ////////// 
  if (TOWING_NBR=="Y" ){
-  if(PROVIDER_CODE!="999"){
+  if(PROVIDER_CODE!="0456"){
     TOWING_PRICE=M<80 ? 180 : 300;
   }else{
     TOWING_PRICE=M<80 ? 180 : 300;
@@ -726,7 +737,7 @@ if (UMNR_NBR!=0 ){UMNR_PRICE=UMNR_NBR*50};
 if (AMBU_NBR!=0 ){AMBU_PRICE=AMBU_NBR*90};
 ///////////////////////////////////////////////////
 
-console.log('H A ND LLLLLLLER',HANDLER)
+
 if(HANDLER=="JETEX" ){ //////// HANDLING QUOTATION JETEX AS HANDLER
   if ((M<=7) && (M>0) ){  /////////// 01-07 T ******** JETEX EAM
     if (Station!="GMAD") {    
@@ -970,7 +981,7 @@ if (M>300){ /////////// START OF  MORE TAHN 300T ******** JETEX EAM
 
 ///////////////////////////////////////////////////
 
-if(PROVIDER_CODE=="1111" ){ //////// HANDLING QUOTATION JETEX EAM
+if(PROVIDER_CODE=="2417" ){ //////// HANDLING QUOTATION JETEX EAM
   if ((M<=7) && (M>0) ){  /////////// 01-07 T ******** JETEX EAM
     if (Station!="GMAD") {    
       Handling=1860;
@@ -1213,7 +1224,7 @@ if (M>300){ /////////// START OF  MORE TAHN 300T ******** JETEX EAM
 
 
 
-if(PROVIDER_CODE=="999" ){ ////////////// QUOTATION HANDLING ROJ
+if(PROVIDER_CODE=="0456" ){ ////////////// QUOTATION HANDLING ROJ
 if ((M<=40) && (M>30)){/////////////////////////// 30-40 T ****ROJ
   Concession=35; 
   Handling=476;
@@ -1252,7 +1263,7 @@ if(Station!="GMMN" && Station!="GMMX" && Station!="GMME"){
 
 
 
-if((PROVIDER_CODE!="1111" && PROVIDER_CODE!="999" && HANDLER!="JETEX") && (HANDLER=="NIL" || HANDLER=="RAMH")){  ////////////// START OF STANDARDIZED HANDLING QUOTATION 
+if((PROVIDER_CODE!="2417" && PROVIDER_CODE!="0456" && HANDLER!="JETEX") && (HANDLER=="TBA OCC" || HANDLER=="RAMH")){  ////////////// START OF STANDARDIZED HANDLING QUOTATION 
 if ((M<=7) && (M>0)){ 
   Concession=30; 
   Handling=169;
@@ -1379,9 +1390,9 @@ let VIP_AMT=0;
 if(HANDLER=="JETEX"){
 
   if(Station=="GMMN"){
-    VIP_AMT=(VIP_ARV_PAX_NBR+VIP_DPT_PAX_NBR)*720;
+    VIP_AMT=(VIP_DPT_PAX_NBR)*720;
   }else if(Station=="GMMX" || Station=="GMME"){
-    VIP_AMT=(VIP_ARV_PAX_NBR+VIP_DPT_PAX_NBR)*600;
+    VIP_AMT=(VIP_DPT_PAX_NBR)*600;
   };  
   
   GPU=="Y" ? GPU_PRICE=660 : GPU_PRICE=0;
@@ -1396,7 +1407,7 @@ if(HANDLER=="JETEX"){
   TOWING_PRICE=0;
 }
 
-if(PROVIDER_CODE=="1111"){
+if(PROVIDER_CODE=="2417"){
   GPU_PRICE=GPU_PRICE*11;
   ASU_PRICE=ASU_PRICE*11;
   PUSH_PRICE=PUSH_PRICE*11;
@@ -1419,10 +1430,8 @@ Handling=Math.trunc(+(Handling/2)) ;
 Concession_handler=Math.trunc(+(Concession_handler/2)) ;
 } 
 ////////////////////////
-if(HANDLER=="NIL" && PROVIDER_CODE=="1111"){Concession=550; Handling=0; Concession_handler=0;} ;
+if(HANDLER=="NIL" && PROVIDER_CODE=="2417"){Concession=550; Handling=0; Concession_handler=0;} ;
 ////////////////
-
-
 
 const H=Handling;
 const HC=Concession_handler;
@@ -1443,8 +1452,12 @@ if(CURRENCY=="USD"){
   Concession_handler=Concession_handler*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
   BasicFee=BasicFee*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
   Concession=60;
-  console.log("Rates.EXCHANGE_USD_SELL",Rates.EXCHANGE_USD_SELL)
-}
+  
+  TRAVEL=((+TRAVEL)*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL));
+  PHONE_PRINT=PHONE_PRINT*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
+  console.log("_______________ TRAVEL",TRAVEL)
+  }
+
 
 /////////////////////  END OF USD CLIENTS INVOICING
 let ConcessionH_Def;
@@ -1470,7 +1483,7 @@ Disb_Def= Disb_F_NBR>0 ? Disb_DB : Disb;
 let Tot;
 let Amount;
 let Letters;
-if(PROVIDER_CODE!='1111' && ClientDetails.LOCAL=="Y"){
+if(PROVIDER_CODE!='2417' && ClientDetails.LOCAL=="Y"){
   
  Tot=  <table style={{ marginRight :"14"}}>
           <td style={{ border: 1, bordercolor: "black", backgroundColor:"lightgrey"}}>        
@@ -1512,6 +1525,16 @@ Amount=<table >
        </table>
    
 }
+//////////////////////////// SERVICES HORS HANDLING 
+
+if(ID.split("-")[6]=="F"){
+  Concession=0; 
+  BasicFee=0;
+  Handling=0;
+  Concession_handler=0;
+}
+
+/////////////////////////
 
 
 return (
@@ -1536,16 +1559,8 @@ return (
               <Text style={{fontWeight:"bold",fontSize:"10", marginLeft:"12"}}>ICE n°                         1524623000039</Text>
               <Text style={{fontWeight:"bold",fontSize:"10", marginLeft:"12"}}>Customer order n°      {`${data[0][0].PROVIDER_CODE}`}</Text>
                     </View>
-            {/* <View style={{ flex: 1}}>
-              <Text style={{fontSize:"12"}}>15/06/21 </Text>
-              <Text style={{fontSize:"12"}}>236547</Text>
-              <Text style={{fontSize:"12"}}>Due date</Text>
-              <Text style={{fontSize:"12"}}>Invoice</Text>
-              <Text style={{fontSize:"12"}}>15/06/21 </Text>
-              <Text style={{fontSize:"12"}}>236547</Text>
-              <Text style={{fontSize:"12"}}>Due date</Text>
-              <Text style={{fontSize:"12"}}>Invoice</Text>
-            </View> */}
+              
+           
             <View style={{ flex: 1}}>
               <table style={{marginRight:"16"}}>
                 <tr style={{ border: 2, bordercolor: "black"}}>
@@ -1565,11 +1580,23 @@ return (
       {OPERATOR}
       <Text style={{textAlign:"center",fontSize:"10"}}>{`Schedule  :     Prov : ${data[0][0].PROV}     Date:${ARV_DTE}   EA ${data[0][0].EA} -- AA ${data[0][0].AA} `} {data[0][0].NAT_FLT=="CGO" ? "CGO :": "PAX :"} {data[0][0].NAT_FLT=="CGO" ? data[0][0].CGO_IN+" Kgs" : data[0][0].PAX_IN} </Text>
       <Text style={{textAlign:"center",fontSize:"10"}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {`       Dest : ${data[0][0].DEST}     Date:${date}   ED ${data[0][0].ED} -- AD ${data[0][0].AD} `} {data[0][0].NAT_FLT=="CGO" ? "CGO :": "PAX :"} {data[0][0].NAT_FLT=="CGO" ? data[0][0].CGO_OUT+" Kgs" : data[0][0].PAX_OUT}</Text>
-      {/* <Text style={{fontSize:"12",textAlign:"center",marginBpottom:"12"}}> </Text> */}
-      {/* <Text style={{fontSize:"12", marginLeft:"12"}}>To charge you for costs incurred at {`${data[0][0].station}/${sita} | Acft ${data[0][0].ACFT}| Reg. ${data[0][0].registration} | MTOW ${data[0][0].MTOW}T`}</Text>
-      <Text style={{textAlign:"center",fontSize:"10", marginTop:"5"}}>{`        Prov : ${data[0][0].PROV}     Date:${data[0][0].ARV_DTE}   EA ${data[0][0].EA} -- AA ${data[0][0].AA}  PAX: 12`}</Text>
-      <Text style={{textAlign:"center",fontSize:"10"}}>{`        Dest : ${data[0][0].DEST}     Date:${data[0][0].date}   ED ${data[0][0].ED} -- AD ${data[0][0].AD}  PAX: 00`}</Text>
-       */}
+    
+      {/* <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1}}>
+                  <Text style={{fontSize:"13",textAlign:"center",marginTop :"8"}}>{ `Prov : ${data[0][0].PROV}`}</Text>
+                  <Text style={{fontSize:"13",textAlign:"center",marginTop :"8"}}>{ `Dest : ${data[0][0].DEST}`}</Text>
+          </View>
+          <View style={{ flex: 1}}>
+                      <Text style={{fontSize:"13",textAlign:"center",marginTop :"8"}}>{ `Date : ${ARV_DTE}`}</Text>
+                      <Text style={{fontSize:"13",textAlign:"center",marginTop :"8"}}>{ `Date : ${date}`}</Text>
+          </View>
+       </View> */}
+
+
+
+
+
+
       <View >
       <table style={{ marginLeft:"12",marginRight:"16" }}>
         <tr style={{ border: 1, bordercolor: "black",backgroundColor:"lightgrey"}}>
@@ -1580,9 +1607,11 @@ return (
       </table>
       </View>
       {/* <Text style={{fontSize:"12",textAlign:"center",marginBpottom:"12"}}> </Text>  */}
+      
+    
       <BasicFee2 BasicFee_Def={BasicFee_Def} Concession_Def={Concession_Def} Concession={Concession} BasicFee={BasicFee} DIFF_TIME={DIFF_TIME} BasicTTL={ttl=>setBasicTTL(ttl)}/>
-      <Permit PERMIT_O_DET={PERMIT_O_DET} LND_PMT_REF={LND_PMT_REF} PERMIT={PERMIT} PERMIT_O={PERMIT_O} COORDINATION_PERMIT={COORDINATION_PERMIT} PermitTTL={ttl=>setPermitTTL(ttl)}/>
-      <AddServices CURRENCY_Def={CURRENCY_Def} Rates={Rates} TRAVEL={TRAVEL} CREW_ASSIST={CREW_ASSIST} PHONE={PHONE} PRINT={PRINT} AdditionalTTL={ttl=>setAdditionalTTL(ttl)}/>
+      <Permit CURRENCY_Def={CURRENCY_Def} PMT_BY_STARS={PMT_BY_STARS} PERMIT_O_DET={PERMIT_O_DET} PMT_REF={PMT_REF} PERMIT={PERMIT} IS_PMT_OUT={IS_PMT_OUT} COORDINATION_PERMIT={COORDINATION_PERMIT} PermitTTL={ttl=>setPermitTTL(ttl)}/>
+      <AddServices  PHONE_PRINT={PHONE_PRINT} CURRENCY_Def={CURRENCY_Def} Rates={Rates} TRAVEL={TRAVEL} CREW_ASSIST={CREW_ASSIST} PHONE={PHONE} PRINT={PRINT} AdditionalTTL={ttl=>setAdditionalTTL(ttl)}/>
       <Surcharges BasicFee_Def={BasicFee_Def} BasicFee={BasicFee} DELAY_TIME_ARV={DELAY_TIME_ARV} DELAY_TIME={DELAY_TIME} DEP_DTE_W={DEP_DTE_W} ARV_DTE_W={ARV_DTE_W} AA={AA} AD={AD} B={B} SurchargeTTL={ttl=>setSurchargeTTL(ttl)} />
       <Subtotal1 Sub1={Sub1} SurchargeTTL={SurchargeTTL} AdditionalTTL={AdditionalTTL} PermitTTL={PermitTTL} BasicTTL={BasicTTL}/>
       

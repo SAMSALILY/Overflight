@@ -104,10 +104,18 @@ if (VIP_AMT!=0){compteur+=1;}
   // (response)=>{
   //  console.log('sddsdsd',response.data);})
   let WO_HNDL_INV=props.WO_HNDL_INV;
+  
+  if ( GPU_PRICE==0 & ASU_PRICE==0 & PUSH_PRICE==0 & AMBU_PRICE==0 & TOWING_PRICE==0 & WCH_PRICE==0){
+    EXTRA="WO:"+WO_HNDL_INV;
+  }
+  if (VIP_AMT!=0 ){
+    EXTRA="GA Terminal included";
+  }
 
-   if (VIP_AMT!=0 || GPU_PRICE!=0 || ASU_PRICE!=0 || PUSH_PRICE!=0 || AMBU_PRICE!=0 || TOWING_PRICE!=0 || WCH_PRICE!=0){
+   if ( GPU_PRICE!=0 || ASU_PRICE!=0 || PUSH_PRICE!=0 || AMBU_PRICE!=0 || TOWING_PRICE!=0 || WCH_PRICE!=0){
     EXTRA=compteur+" Extra SVC included";
-  }else {EXTRA="WO:"+WO_HNDL_INV}
+  }
+  
 
    if(HANDLER=="JETEX"){
     // GPU_Converted=GPU_PRICE/currency_buy;

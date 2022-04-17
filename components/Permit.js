@@ -3,13 +3,21 @@ import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
 export default function Permit(props) {
 
-    const [COORDINATION_PERMIT, setCOORDINATION_PERMIT] = React.useState(() => props.COORDINATION_PERMIT );
-    const [PERMIT, setPERMIT] = React.useState(() => props.PERMIT );
-    const [PERMIT_O, setPERMIT_O] = React.useState(() => props.PERMIT_O);
-
+    let COORDINATION_PERMIT = props.COORDINATION_PERMIT ;
+    let PERMIT= props.PERMIT ;
+    let IS_PMT_OUT=props.IS_PMT_OUT;
+    let PMT_REF=props.PMT_REF;
+    let PMT_BY_STARS=props.PMT_BY_STARS;
+    let CURRENCY_Def=props.CURRENCY_Def;
     let PermitTTL=0; 
 
-   
+    // if(CURRENCY_Def=="USD"){
+    //   (IS_PMT_OUT==1 & PMT_BY_STARS=="Yes" & PMT_REF!= "" & PMT_REF!=" ") ? PERMIT=100 : PERMIT=70
+    // }else if (CURRENCY_Def=="EUR"){
+    //   (IS_PMT_OUT==1 & PMT_BY_STARS=="Yes" & PMT_REF!= "" & PMT_REF!=" ") ? PERMIT=90 : PERMIT=60
+    // }
+       
+     
    let T
    let T_DESCRIPTION
    let T_AMOUNT
@@ -28,14 +36,14 @@ export default function Permit(props) {
      PermitTTL+=PERMIT;
      };
 
-     let T3
-    let T3_DESCRIPTION
-    let T3_AMOUNT
-    if (PERMIT_O!=0) { T3=<Text style={{fontSize:"10", marginLeft:"30"}}>- CAA Out of opening hours</Text>;
-     T3_DESCRIPTION= <Text style={{fontSize:"10"}}>Week-end</Text>;
-     T3_AMOUNT= <Text style={{fontSize:"10"}}>{PERMIT_O.toFixed(2)}</Text>;
-     PermitTTL+=PERMIT_O;
-     };
+    //  let T3
+    // let T3_DESCRIPTION
+    // let T3_AMOUNT
+    // if (IS_PMT_OUT!=0) { T3=<Text style={{fontSize:"10", marginLeft:"30"}}>- CAA Out of opening hours</Text>;
+    //  T3_DESCRIPTION= <Text style={{fontSize:"10"}}>Week-end</Text>;
+    //  T3_AMOUNT= <Text style={{fontSize:"10"}}>{IS_PMT_OUT.toFixed(2)}</Text>;
+    //  PermitTTL+=PERMIT_O;
+    //  };
 
      ////////////
 
@@ -43,7 +51,7 @@ export default function Permit(props) {
      props.PermitTTL(PermitTTL);
       let P;
       
-     if (COORDINATION_PERMIT!=0 || PERMIT!=0 || PERMIT_O!=0){P=<Text style={{fontWeight:"bold",fontSize:"11",marginLeft:"18",marginTop:"6"}}>Diplomatic/CAA Permits, PPR/Slots</Text>
+     if (COORDINATION_PERMIT!=0 || PERMIT!=0 ){P=<Text style={{fontWeight:"bold",fontSize:"11",marginLeft:"18",marginTop:"6"}}>Diplomatic/CAA Permits, PPR/Slots</Text>
      } 
    return (
         <div>
@@ -54,19 +62,19 @@ export default function Permit(props) {
       <View style={{ flex: 2 }}>
          {T}
          {T2}
-         {T3}
+         {/* {T3} */}
       </View>
       <View style={{ flex: 2}}>
       
         {T_DESCRIPTION}
         {T2_DESCRIPTION}
-        {T3_DESCRIPTION}
+        {/* {T3_DESCRIPTION} */}
       </View>
       <View style={{ flex: 1}}>
      
         {T_AMOUNT}
         {T2_AMOUNT}
-        {T3_AMOUNT}
+        {/* {T3_AMOUNT} */}
       </View>
 
       </View>
