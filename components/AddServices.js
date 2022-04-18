@@ -3,19 +3,21 @@ import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
 export default function AddServices(props) {
 
-    const [CREW_ASSIST, setCREW_ASSIST] = React.useState(() => props.CREW_ASSIST );
+    let CREW_ASSIST = props.CREW_ASSIST ;
     let TRAVEL= props.TRAVEL ;
     console.log("||||||||||| TRAVEL ADDSERVC",TRAVEL)
     const [PRINT, setPRINT] = React.useState(() => props.PRINT );
     const [PHONE, setPHONE] = React.useState(() => props.PHONE );
     
-    let [PHONE_PRINT, setPHONE_PRINT] = React.useState(() => props.PHONE_PRINT);
+    let PHONE_PRINT= props.PHONE_PRINT;
     //////// Currencies & Rates ////PRINT_PHONE_TOT
    let currency_sell;
    let currency_buy;
    const CURRENCY=props.CURRENCY_Def;
   
-   {{ PHONE>15 ? PHONE_PRINT=10 : PHONE_PRINT=5}}
+  //  {{ PHONE>15 ? PHONE_PRINT=10 : PHONE_PRINT=5}}
+  
+
    const RATES=props.Rates;
    const EXCHANGE_EUR_SELL=RATES.EXCHANGE_EUR_SELL;
    const EXCHANGE_EUR_BUY=RATES.EXCHANGE_EUR_BUY;
@@ -25,6 +27,7 @@ export default function AddServices(props) {
      case "EUR":
        currency_sell = EXCHANGE_EUR_SELL;
        currency_buy = EXCHANGE_EUR_BUY;
+       PHONE>15 ? PHONE_PRINT=10 : PHONE_PRINT=5
        break;
      case "MAD":
        currency_sell = 1;
@@ -33,6 +36,7 @@ export default function AddServices(props) {
      case "USD":
        currency_sell = EXCHANGE_USD_SELL;
        currency_buy = EXCHANGE_USD_BUY;
+       PHONE>15 ? PHONE_PRINT=12 : PHONE_PRINT=6
    }
    ///// end Currencies and rates
     
