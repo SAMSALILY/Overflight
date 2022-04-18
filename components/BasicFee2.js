@@ -12,7 +12,8 @@ export default function BasicFee(props) {
  
       let TurnAround="";
 
-   let BasicTTL=BasicFee+Concession;
+  //  let BasicTTL=BasicFee+Concession;
+   let BasicTTL=BasicFee ;
 
 
    if (DIFF_TIME>=4){
@@ -40,19 +41,19 @@ export default function BasicFee(props) {
       <View style={{ flex: 2 }}>
         <Text style={{fontSize:"10", marginLeft:"30"}}>- Basic Fee</Text>
       
-        <Text style={{fontSize:"10", marginLeft:"30"}}>- Airport Concession Fee </Text>
+        {/* <Text style={{fontSize:"10", marginLeft:"30"}}>- Airport Concession Fee </Text> */}
         {T} 
       </View>
       <View style={{ flex: 2}}>
         <Text style={{fontSize:"10"}}> -------------------------</Text>
         
-        <Text style={{fontSize:"10"}}> -------------------------</Text>
+        {/* <Text style={{fontSize:"10"}}> -------------------------</Text> */}
         {T_DESCRIPTION}
       </View>
       <View style={{ flex: 1}}>
       <Text style={{fontSize:"10"}}>{(+BasicFee).toFixed(2)} </Text>
        
-        <Text style={{fontSize:"10"}}>{(+Concession).toFixed(2)}</Text>
+        {/* <Text style={{fontSize:"10"}}>{(+Concession).toFixed(2)}</Text> */}
         {T_AMOUNT}
       </View>
 
