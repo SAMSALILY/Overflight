@@ -338,7 +338,7 @@ default:
 const Disb_F_NBR=data[0][0].Disb_F_NBR;
 const CURRENCY_F_NBR=data[0][0].CURRENCY_F_NBR;
 const BasicFee_F_NBR=data[0][0].BasicFee_F_NBR;
-// const AptConcession_F_NBR=data[0][0].AptConcession_F_NBR;
+const AptConcession_F_NBR=data[0][0].AptConcession_F_NBR;
 const ConcessionH_F_NBR=data[0][0].ConcessionH_F_NBR;
 const Handling_F_NBR=data[0][0].Handling_F_NBR;
 
@@ -446,7 +446,7 @@ const PMT_BY_STARS=data[0][0].PMT_BY_STARS;
 // const Concession_handler=data[0][0].Concession_handler;
 
 // const BasicFee=data[0][0].BasicFee;
-// const Concession=data[0][0].Concession;
+// const C=data[0][0].Concession;
 ///////////////////////////
 const NAT_FLT=data[0][0].NAT_FLT;
 const WO_HNDL_INV=data[0][0].WO_HNDL_INV;
@@ -529,8 +529,6 @@ const T_DELAY2_ARV=`${ACT_ARV_DATE}T${data[0][0].AA}`;
 const DELAY_TIME_ARV=(new Date(T_DELAY2_ARV)-new Date(T_DELAY1_ARV))/3600000;
 /////////////////////////////
 
-
-
 let S;
 if(AirportTTL!=0 || HandlingTTL!=0 || OtherTTL!=0 ){
  S= <Subtotal2 AirportTTL={AirportTTL} HandlingTTL={HandlingTTL} OtherTTL={OtherTTL}/>
@@ -542,11 +540,20 @@ let OPERATOR;
 
 let originalOperator=data[0][0].OPERATOR;
 let originalProvider=data[0][0].PROVIDER;
-// const AptConcession_F_NBR=data[0][0].AptConcession_F_NBR;
-let Concession_Def;
-CURRENCY=="EUR" ? Concession_Def= 50 : Concession_Def=60;
-// Concession_Def= AptConcession_F_NBR>0 ? ConcessionDB : Concession;
 
+let C;
+if(PROVIDER_CODE!="0456" & PROVIDER_CODE!="2417"){
+  if(CURRENCY=="EUR" ){
+    C=50;
+  }
+  
+  if(CURRENCY=="USD" & PROVIDER_CODE!="0456"){
+    C=60;
+  }
+  
+}else{
+  C=0;
+}
 
 let removedSpacesOperator = originalOperator.split(" ").join("");
 let removedSpacesProvider = originalProvider.split(" ").join("");
@@ -558,10 +565,10 @@ if ((removedSpacesOperator).localeCompare(removedSpacesProvider)!==0){
 OPERATOR= <Text style={{fontSize:"10", marginLeft:"12"}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Operator   :    {`${data[0][0].OPERATOR}`} </Text>
 }
 /////////////// TOTAL
-let Total=(Math.round((OtherTTL+AirportTTL+HandlingTTL)*Disb)/100)+(Math.round( (Concession_Def+OtherTTL+AirportTTL+HandlingTTL)*100)/100)+(Math.round((SurchargeTTL+AdditionalTTL+PermitTTL+BasicTTL)*100)/100);
+let Total=(Math.round((OtherTTL+AirportTTL+HandlingTTL)*Disb)/100)+(Math.round( (C+OtherTTL+AirportTTL+HandlingTTL)*100)/100)+(Math.round((SurchargeTTL+AdditionalTTL+PermitTTL+BasicTTL)*100)/100);
 
 if(CURRENCY=="MAD"){
-Total=(Math.round((OtherTTL+AirportTTL+HandlingTTL)*Disb)/100)+(Math.round((((Concession_Def+OtherTTL+AirportTTL+HandlingTTL)*Disb)/100)*20)/100)+(Math.round( (OtherTTL+AirportTTL+HandlingTTL)*100)/100)+(Math.round((SurchargeTTL+AdditionalTTL+PermitTTL+BasicTTL)*100)/100);
+Total=(Math.round((OtherTTL+AirportTTL+HandlingTTL)*Disb)/100)+(Math.round((((C+OtherTTL+AirportTTL+HandlingTTL)*Disb)/100)*20)/100)+(Math.round( (OtherTTL+AirportTTL+HandlingTTL)*100)/100)+(Math.round((SurchargeTTL+AdditionalTTL+PermitTTL+BasicTTL)*100)/100);
 }
 ////////////////////
 let Sub1=AirportTTL+HandlingTTL+OtherTTL ;
@@ -650,7 +657,7 @@ if(CURRENCY=="MAD" && PROVIDER_CODE=="2417"){
   VAT2=<Text style={{fontSize:"11",textAlign:"right",marginRight:"18"}}>VAT          : </Text>
   VAT3=<Text style={{fontSize:"10",textAlign:"right",marginRight:"18"}}> Disbursement  x 20 %</Text>
   VAT4=<Text style={{fontSize:"10",textAlign:"center",marginRight:"18"}}> </Text>
-  VAT5=<Text style={{fontSize:"11",textAlign:"right",marginRight:"18"}}>{Math.round((((Concession_Def+OtherTTL+AirportTTL+HandlingTTL)*Disb)/100)*20)/100}</Text>
+  VAT5=<Text style={{fontSize:"11",textAlign:"right",marginRight:"18"}}>{Math.round((((C+OtherTTL+AirportTTL+HandlingTTL)*Disb)/100)*20)/100}</Text>
   }
   
 /////////////////////////////
@@ -684,10 +691,6 @@ Disb_Vat= <View style={{ flexDirection: "row" }}>
     {VAT5}
   </View>
 </View>;
-
-
-
-
 
 ///////
 
@@ -1238,6 +1241,7 @@ if ((M<=40) && (M>30)){/////////////////////////// 30-40 T ****ROJ
   Concession=35; 
   Handling=476;
   BasicFee=200;
+  // Handling=560;
   Concession_handler=84;
 
 }///////////////////// End 30-40 T *****ROJ
@@ -1247,6 +1251,7 @@ if ((M<=50) && (M>40)){
   Handling=516;
   BasicFee=200;
   Concession_handler=84;
+  // Handling=600;
 } ///////////////////////// End 40-50 T ****ROJ
 /////////////////////  70-80 T *****ROJ 
 if ((M<=80) && (M>71)){ 
@@ -1254,6 +1259,7 @@ if ((M<=80) && (M>71)){
   Handling=985;
   BasicFee=250;
   Concession_handler=110;
+  // Handling=1095;
 }//////////////////////// End 70-80 T *****ROJ
 /////////////////////////// 230-300 T ******ROJ    
 if ((M<=300) && (M>230)){     
@@ -1261,6 +1267,7 @@ if ((M<=300) && (M>230)){
   Handling=2347;
   BasicFee=400;
   Concession_handler=228;
+  // Handling=2575;
   
 } ///////////////////////////End 230-300 T ******ROJ
 }////////////////////// END HANDLING QUOTATION ROJ
@@ -1271,129 +1278,253 @@ if(Station!="GMMN" && Station!="GMMX" && Station!="GMME"){
 }
 
 
+if((PROVIDER_CODE!="2417" && PROVIDER_CODE!="0456" && HANDLER!="JETEX") && (HANDLER=="TBA OCC" || HANDLER=="RAMH" || HANDLER=="" || HANDLER==" ")){  ////////////// START OF STANDARDIZED HANDLING QUOTATION
 
-if((PROVIDER_CODE!="2417" && PROVIDER_CODE!="0456" && HANDLER!="JETEX") && (HANDLER=="TBA OCC" || HANDLER=="RAMH")){  ////////////// START OF STANDARDIZED HANDLING QUOTATION 
-if ((M<=7) && (M>0)){ 
-  Concession=30; 
-  Handling=169;
-  BasicFee=180;
-  Concession_handler=36;
-}
-/////////////////////////////////////////////
-if ((M<=15) && (M>7)) {   
-  Concession=30; 
-  BasicFee=180;
-  Handling=224;
-  Concession_handler=36;
-}
-//////////////////////////
-if ((M<=19) && (M>15)){ 
-  Concession=35; 
-  BasicFee=190;
-  Handling=224;
-  Concession_handler=49;
-}
-/////////////////////////
-if ((M<=30) && (M>19)){ 
-  Concession=35; 
-  BasicFee=190;
-  Handling=361;
-  Concession_handler=49;
-}
-////////////////////////////////////////////////////////
-if ((M<=40) && (M>30)){ 
- 
-  Concession=40; 
-  BasicFee=200;
-  Handling=571;
-  Concession_handler=84;
-} 
-////////////////////////
-if ((M<=50) && (M>40)){ 
-  Concession=40;     
-  BasicFee=250;
-  Handling=611;
-  Concession_handler=84;
-}      
-//////////////////////////
-if ((M<=60) && (M>50)){ 
-  Concession=45; 
-  BasicFee=250;
-  Handling=710;
-  Concession_handler=84;
-}     
-////////////
-if ((M<=70) && (M>60)){  
-  Concession=45; 
-  BasicFee=250;
-  Handling=990;
-  Concession_handler=110;
-}
-/////////////////////////
-if ((M<=80) && (M>71)){ 
-  Concession=45; 
-  BasicFee=250;
-  Handling=1045;
-  Concession_handler=110;
-}
-////
-if ((M<=100) && (M>81)){ 
+  // if(PROVIDER_CODE!="0027" && PROVIDER_CODE!="0194" && PROVIDER_CODE!="0732" ){
+   
+  if ((M<=7) && (M>0)){ 
+    Concession=50; 
+    Handling=169;
+    BasicFee=190;
+    Concession_handler=36;
+  }
+  /////////////////////////////////////////////
+  if ((M<=15) && (M>7)) {   
+    Concession=50; 
+    BasicFee=190;
+    Handling=224;
+    Concession_handler=36;
+  }
+  //////////////////////////
+  if ((M<=19) && (M>15)){ 
+    Concession=50; 
+    BasicFee=190;
+    Handling=224;
+    Concession_handler=49;
+  }
+  /////////////////////////
+  if ((M<=30) && (M>19)){ 
+    Concession=50; 
+    BasicFee=210;
+    Handling=361;
+    Concession_handler=49;
+  }
+  ////////////////////////////////////////////////////////
+  if ((M<=40) && (M>30)){ 
+   
+    Concession=50; 
+    BasicFee=210;
+    Handling=571;
+    Concession_handler=84;
+  } 
+  ////////////////////////
+  if ((M<=50) && (M>40)){ 
+    Concession=50;     
+    BasicFee=210;
+    Handling=611;
+    Concession_handler=84;
+  }      
+  //////////////////////////
+  if ((M<=60) && (M>50)){ 
+    Concession=50; 
+    BasicFee=250;
+    Handling=710;
+    Concession_handler=84;
+  }     
+  ////////////
+  if ((M<=70) && (M>60)){  
+    Concession=50; 
+    BasicFee=250;
+    Handling=990;
+    Concession_handler=110;
+  }
+  /////////////////////////
+  if ((M<=80) && (M>71)){ 
+    Concession=50; 
+    BasicFee=250;
+    Handling=1045;
+    Concession_handler=110;
+  }
+  ////
+  if ((M<=100) && (M>81)){ 
+    Concession=50; 
+    BasicFee=300;
+    Handling=1290;
+    Concession_handler=110;
+  }
+  //// 
+  if ((M<=120) && (M>100)){
+    Concession=50; 
+    BasicFee=300;
+    Handling=1322;
+    Concession_handler=158;
+  }
+  ////
+  if ((M<=150) && (M>120)){ 
+    Concession=50; 
+    BasicFee=300;
+    Handling=1650;
+    Concession_handler=158;
+    }
+  ////
+  if ((M<=180) && (M>150)){ 
   Concession=50; 
-  BasicFee=300;
-  Handling=1290;
-  Concession_handler=110;
-}
-//// 
-if ((M<=120) && (M>100)){
-  Concession=50; 
-  BasicFee=300;
-  Handling=1322;
-  Concession_handler=158;
-}
-////
-if ((M<=150) && (M>120)){ 
-  Concession=50; 
-  BasicFee=300;
+  BasicFee=350;
   Handling=1650;
   Concession_handler=158;
   }
-////
-if ((M<=180) && (M>150)){ 
-Concession=50; 
-BasicFee=350;
-Handling=1650;
-Concession_handler=158;
-}
-////
-if ((M<=200) && (M>180)){ 
-  Concession=50; 
-  BasicFee=350;
-  Handling=2400;
-  Concession_handler=158;
-}
-//////////////////
-if ((M<=230) && (M>200)){  
-  Concession=50; 
-  BasicFee=350;
-  Handling=2400;
-  Concession_handler=228;
-}
-////
-if ((M<=300) && (M>230)){     
-  Concession=50; 
-  BasicFee=400;
-  Handling=2500;
-  Concession_handler=228;
-}    
-////
-if (M>300){ 
-  Concession=50; 
-  BasicFee=400;
-  Handling=3100;
-  Concession_handler=300;
-}
-}  //////////////////////////// END OF STANDARIZED HANDLING QUOTATION
-
+  ////
+  if ((M<=200) && (M>180)){ 
+    Concession=50; 
+    BasicFee=350;
+    Handling=2400;
+    Concession_handler=158;
+  }
+  //////////////////
+  if ((M<=230) && (M>200)){  
+    Concession=50; 
+    BasicFee=350;
+    Handling=2400;
+    Concession_handler=228;
+  }
+  ////
+  if ((M<=300) && (M>230)){     
+    Concession=50; 
+    BasicFee=400;
+    Handling=2500;
+    Concession_handler=228;
+  }    
+  ////
+  if (M>300){ 
+    Concession=50; 
+    BasicFee=400;
+    Handling=3100;
+    Concession_handler=300;
+  }/////////////////////////////
+  
+  // }else{
+  // if ((M<=7) && (M>0)){ 
+  //   Concession=50; 
+  //   Handling=260;
+  //   BasicFee=190;
+  //   Concession_handler=0;
+  // }
+  // /////////////////////////////////////////////
+  // if ((M<=15) && (M>7)) {   
+  //   Concession=50; 
+  //   BasicFee=190;
+  //   Handling=260;
+  //   Concession_handler=0;
+  // }
+  // //////////////////////////
+  // if ((M<=19) && (M>15)){ 
+  //   Concession=50; 
+  //   BasicFee=190;
+  //   Handling=273;
+  //  Concession_handler=0;
+  // }
+  // /////////////////////////
+  // if ((M<=30) && (M>19)){ 
+  //   Concession=50; 
+  //   BasicFee=210;
+  //   Handling=410;
+  // Concession_handler=0;
+  // }
+  // ////////////////////////////////////////////////////////
+  // if ((M<=40) && (M>30)){ 
+   
+  //   Concession=50; 
+  //   BasicFee=210;
+  //   Handling=655;
+  //   Concession_handler=0;
+  // } 
+  // ////////////////////////
+  // if ((M<=50) && (M>40)){ 
+  //   Concession=50;     
+  //   BasicFee=210;
+  //   Handling=695;
+  //   Concession_handler=0;
+  // }      
+  // //////////////////////////
+  // if ((M<=60) && (M>50)){ 
+  //   Concession=50; 
+  //   BasicFee=250;
+  //   Handling=794;
+  //   Concession_handler=0;
+  // }     
+  // ////////////
+  // if ((M<=70) && (M>60)){  
+  //   Concession=50; 
+  //   BasicFee=250;
+  //   Handling=1100;
+  //   Concession_handler=0;
+  // }
+  // /////////////////////////
+  // if ((M<=80) && (M>71)){ 
+  //   Concession=50; 
+  //   BasicFee=250;
+  //   Handling=1155;
+  //   Concession_handler=0;
+  // }
+  // ////
+  // if ((M<=100) && (M>81)){ 
+  //   Concession=50; 
+  //   BasicFee=300;
+  //   Handling=1400;
+  //   Concession_handler=0;
+  // }
+  // //// 
+  // if ((M<=120) && (M>100)){
+  //   Concession=50; 
+  //   BasicFee=300;
+  //   Handling=1480;
+  //   Concession_handler=0;
+  // }
+  // ////
+  // if ((M<=150) && (M>120)){ 
+  //   Concession=50; 
+  //   BasicFee=300;
+  //   Handling=1808;
+  //   Concession_handler=0;
+  //   }
+  // ////
+  // if ((M<=180) && (M>150)){ 
+  // Concession=50; 
+  // BasicFee=350;
+  // Handling=1808;
+  // Concession_handler=0;
+  // }
+  // ////
+  // if ((M<=200) && (M>180)){ 
+  //   Concession=50; 
+  //   BasicFee=350;
+  //   Handling=2558;
+  //   Concession_handler=0;
+  // }
+  // //////////////////
+  // if ((M<=230) && (M>200)){  
+  //   Concession=50; 
+  //   BasicFee=350;
+  //   Handling=2628;
+  //   Concession_handler=0;
+  // }
+  // ////
+  // if ((M<=300) && (M>230)){     
+  //   Concession=50; 
+  //   BasicFee=400;
+  //   Handling=2728;
+  //   Concession_handler=0;
+  // }    
+  // ////
+  // if (M>300){ 
+  //   Concession=50; 
+  //   BasicFee=400;
+  //   Handling=3400;
+  //   Concession_handler=0;
+  // }
+  // }//////////////////// END IF OF REGROUPEMENT
+  }  //////////////////////////// END OF STANDARIZED HANDLING QUOTATION
+  
 ////////////////// EXTRA GSE FOR JETEX EAM AS HANDLER//
 let VIP_AMT=0;
 if(HANDLER=="JETEX"){
@@ -1427,7 +1558,7 @@ if(PROVIDER_CODE=="2417"){
   }
 //////////////////////////////////////
 //////  SARAH & AIR OCEAN ///////////////
-if ( PROVIDER_CODE=="5555" || PROVIDER_CODE=="8888") { 
+if ( PROVIDER_CODE=="2523" || PROVIDER_CODE=="2234") { 
   Handling=160 ;
   Concession_handler=0;
   BasicFee=100;
@@ -1439,7 +1570,7 @@ Handling=Math.trunc(+(Handling/2)) ;
 Concession_handler=Math.trunc(+(Concession_handler/2)) ;
 } 
 ////////////////////////
-if(HANDLER=="NIL" && PROVIDER_CODE=="2417"){Concession=550; Handling=0; Concession_handler=0;} ;
+if(HANDLER=="TBA OCC" && PROVIDER_CODE=="2417"){Concession=550; Handling=0; Concession_handler=0;} ;
 ////////////////
 
 const H=Handling;
@@ -1459,9 +1590,118 @@ const CUR=CURRENCY;
 if(CURRENCY=="USD"){
   Handling=Handling*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
   Concession_handler=Concession_handler*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
-  BasicFee=BasicFee*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
   Concession=60;
+  // if ( NAT_FLT=="TECH") { 
+  //   Handling=Math.trunc(+(Handling/2)) ;
+  //   Concession_handler=Math.trunc(+(Concession_handler/2)) ;
+  //   } 
+  ////////////////////////// GENERAL PRICING
+  let M=B;
+  if ((M<=7) && (M>0)){ 
+    Concession=60; 
+     BasicFee=210;
   
+  }
+  /////////////////////////////////////////////
+  if ((M<=15) && (M>7)) {   
+    Concession=60; 
+    BasicFee=210;
+  
+  }
+  //////////////////////////
+  if ((M<=19) && (M>15)){ 
+    Concession=60; 
+    BasicFee=210;
+   
+  }
+  /////////////////////////
+  if ((M<=30) && (M>19)){ 
+    Concession=60; 
+    BasicFee=250;
+   
+  }
+  ////////////////////////////////////////////////////////
+  if ((M<=40) && (M>30)){ 
+   
+    Concession=60; 
+    BasicFee=250;
+    
+  } 
+  ////////////////////////
+  if ((M<=50) && (M>40)){ 
+    Concession=60;     
+    BasicFee=250;
+   
+  }      
+  //////////////////////////
+  if ((M<=60) && (M>50)){ 
+    Concession=60; 
+    BasicFee=290;
+  
+  }     
+  ////////////
+  if ((M<=70) && (M>60)){  
+    Concession=60; 
+    BasicFee=290;
+  
+  }
+  /////////////////////////
+  if ((M<=80) && (M>71)){ 
+    Concession=60; 
+    BasicFee=290;
+    
+  }
+  ////
+  if ((M<=100) && (M>81)){ 
+    Concession=60; 
+    BasicFee=310;
+  
+  }
+  //// 
+  if ((M<=120) && (M>100)){
+    Concession=60; 
+    BasicFee=310;
+  
+  }
+  ////
+  if ((M<=150) && (M>120)){ 
+    Concession=60; 
+    BasicFee=310;
+  
+    }
+  ////
+  if ((M<=180) && (M>150)){ 
+  Concession=60; 
+  BasicFee=370;
+  
+  }
+  ////
+  if ((M<=200) && (M>180)){ 
+    Concession=60; 
+    BasicFee=370;
+  
+  }
+  //////////////////
+  if ((M<=230) && (M>200)){  
+    Concession=60; 
+    BasicFee=370;
+  
+  }
+  ////
+  if ((M<=300) && (M>230)){     
+    Concession=60; 
+    BasicFee=410;
+  
+  }    
+  ////
+  if (M>300){ 
+    Concession=60; 
+    BasicFee=410;
+  
+  }
+
+  ////////////////////////// END GENERAL PRICING
+    /////////////////////////////////
   TRAVEL=((+TRAVEL)*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL));
   CREW_ASSIST=(CREW_ASSIST)*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
   
@@ -1483,8 +1723,8 @@ let Handling_Def;
 // Handling_Def= IsHandling_F>0 ? HandlingDB : Handling;
 Handling_Def= Handling_F_NBR>0 ? HandlingDB : Handling;
 
-// let Concession_Def;
-// Concession_Def= AptConcession_F_NBR>0 ? ConcessionDB : Concession;
+let Concession_Def;
+Concession_Def= AptConcession_F_NBR>0 ? ConcessionDB : Concession;
 
 let BasicFee_Def;
 BasicFee_Def= BasicFee_F_NBR>0 ? BasicFeeDB : BasicFee;
@@ -1549,11 +1789,27 @@ if(ID.split("-")[6]=="F"){
   Handling=0;
   Concession_handler=0;
 }
+////////////////////////// 
+
+// let Concession_Def;
+
+// if(PROVIDER_CODE!="0456" & PROVIDER_CODE!="2417"){
+//   if(CURRENCY=="EUR" ){
+//     Concession_Def=50;
+//   }
+  
+//   if(CURRENCY=="USD" & PROVIDER_CODE!="0456"){
+//     Concession_Def=60;
+//   }
+  
+// }else{
+//   Concession_Def=Concession_Def;
+// }
 
 /////////////////////////
 let APT_CONCESSION;
 
-if (Concession_Def!=0){APT_CONCESSION= <View style={{ flexDirection: "row" }}>
+if (C!=0){APT_CONCESSION= <View style={{ flexDirection: "row" }}>
 <View style={{ flex: 5 }}>
 </View>
 <View style={{ flex: 5 }}>
@@ -1567,7 +1823,7 @@ if (Concession_Def!=0){APT_CONCESSION= <View style={{ flexDirection: "row" }}>
 </View>
 <View style={{ flex: 1 , textAlign:"right",marginRight:"18" }}>
 <Text style={{fontSize:"11"}}>
-{Concession_Def.toFixed(2)} </Text>
+{C.toFixed(2)} </Text>
 
 </View>
 </View>
@@ -1628,10 +1884,10 @@ return (
       {/* <Text style={{fontSize:"12",textAlign:"center",marginBpottom:"12"}}> </Text>  */}
       
     
-      <BasicFee2 BasicFee_Def={BasicFee_Def} Concession_Def={Concession_Def} Concession={Concession} BasicFee={BasicFee} DIFF_TIME={DIFF_TIME} BasicTTL={ttl=>setBasicTTL(ttl)}/>
+      <BasicFee2 PROVIDER_CODE={PROVIDER_CODE} BasicFee_Def={BasicFee_Def} Concession_Def={Concession_Def} Concession={Concession} BasicFee={BasicFee} DIFF_TIME={DIFF_TIME} BasicTTL={ttl=>setBasicTTL(ttl)}/>
       <Permit CURRENCY_Def={CURRENCY_Def} PMT_BY_STARS={PMT_BY_STARS} PERMIT_O_DET={PERMIT_O_DET} PMT_REF={PMT_REF} PERMIT={PERMIT} IS_PMT_OUT={IS_PMT_OUT} COORDINATION_PERMIT={COORDINATION_PERMIT} PermitTTL={ttl=>setPermitTTL(ttl)}/>
       <AddServices  PHONE_PRINT={PHONE_PRINT} CURRENCY_Def={CURRENCY_Def} Rates={Rates} TRAVEL={TRAVEL} CREW_ASSIST={CREW_ASSIST} PHONE={PHONE} PRINT={PRINT} AdditionalTTL={ttl=>setAdditionalTTL(ttl)}/>
-      <Surcharges BasicFee_Def={BasicFee_Def} BasicFee={BasicFee} DELAY_TIME_ARV={DELAY_TIME_ARV} DELAY_TIME={DELAY_TIME} DEP_DTE_W={DEP_DTE_W} ARV_DTE_W={ARV_DTE_W} AA={AA} AD={AD} B={B} SurchargeTTL={ttl=>setSurchargeTTL(ttl)} />
+      <Surcharges DIFF_TIME={DIFF_TIME} BasicFee_Def={BasicFee_Def} BasicFee={BasicFee} DELAY_TIME_ARV={DELAY_TIME_ARV} DELAY_TIME={DELAY_TIME} DEP_DTE_W={DEP_DTE_W} ARV_DTE_W={ARV_DTE_W} AA={AA} AD={AD} B={B} SurchargeTTL={ttl=>setSurchargeTTL(ttl)} />
       <Subtotal1 Sub1={Sub1} SurchargeTTL={SurchargeTTL} AdditionalTTL={AdditionalTTL} PermitTTL={PermitTTL} BasicTTL={BasicTTL}/>
       
       {Behalf}

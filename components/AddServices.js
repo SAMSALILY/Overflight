@@ -27,7 +27,7 @@ export default function AddServices(props) {
      case "EUR":
        currency_sell = EXCHANGE_EUR_SELL;
        currency_buy = EXCHANGE_EUR_BUY;
-       PHONE>15 ? PHONE_PRINT=10 : PHONE_PRINT=5
+       PHONE>10 ? PHONE_PRINT=10 : PHONE_PRINT=5
        break;
      case "MAD":
        currency_sell = 1;
@@ -36,7 +36,7 @@ export default function AddServices(props) {
      case "USD":
        currency_sell = EXCHANGE_USD_SELL;
        currency_buy = EXCHANGE_USD_BUY;
-       PHONE>15 ? PHONE_PRINT=12 : PHONE_PRINT=6
+       PHONE>10 ? PHONE_PRINT=13 : PHONE_PRINT=7
    }
    ///// end Currencies and rates
     

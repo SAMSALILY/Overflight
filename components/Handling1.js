@@ -41,7 +41,7 @@ export default function Handling(props) {
 
 
 
-
+let PROVIDER_CODE=props.PROVIDER_CODE;
 let GPU_PRICE=props.GPU_PRICE;
 let ASU_PRICE=props.ASU_PRICE;
 let PUSH_PRICE=props.PUSH_PRICE;
@@ -55,11 +55,9 @@ let ID=props.ID;
 let WCH_NBR=props.WCH_NBR;
 let VIP_AMT=props.VIP_AMT;
 let VIP_LOUNGE_ONLY=props.VIP_LOUNGE_ONLY;
-// let PUSH_BACK=props.PUSH_BACK;
-// let GPU_NBR=props.GPU_NBR;
-// let ASU_NBR=props.ASU_NBR;
-// let TOWING=props.TOWING;
-console.log("Services dans hnadling1",Services);
+
+(PROVIDER_CODE=="0027" || PROVIDER_CODE=="0194" || PROVIDER_CODE=="0732" || PROVIDER_CODE=="0456") ? Services=Services+Concession_handler : Services=Services;
+(PROVIDER_CODE=="0027" || PROVIDER_CODE=="0194" || PROVIDER_CODE=="0732" || PROVIDER_CODE=="0456") ? Concession_handler=0 : Concession_handler=Concession_handler;
 
 let EXTRA;
 
@@ -73,36 +71,6 @@ if (WCH_PRICE!=0){compteur+=1;}
 if (VIP_AMT!=0){compteur+=1;}
 
 
-// useEffect(()=>{
-
-  // const updateHandling = async () => {
-  
-  //   try {
-  //     const request = await axios.put(
-  //       'http://127.0.0.1:1501/api/data/putHandling',
-  //       {
-  //         title: 'Updated Post',
-  //        body: {Services,Concession_handler,ID},
-  //       }
-  //     );
-  //     console.log("REQUEST",request);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // updateHandling();
-
-
-// },[{}])
-// useEffect(()=>{
-//   axios.get(`http://127.0.0.1:1501/api/data/GetHandling`+ID,{ crossdomain: true }).then(
-//     (response)=>{
-//     console.log('GetHandling',response.data);});  
-// },[]);
-   
-  //  axios.put(`http://127.0.0.1:1501/api/putHandling`,{Services,Concession_handler,ID},{ crossdomain: true }).then(
-  // (response)=>{
-  //  console.log('sddsdsd',response.data);})
   let WO_HNDL_INV=props.WO_HNDL_INV;
   
   if ( GPU_PRICE==0 & ASU_PRICE==0 & PUSH_PRICE==0 & AMBU_PRICE==0 & TOWING_PRICE==0 & WCH_PRICE==0){

@@ -9,6 +9,11 @@ export default function BasicFee(props) {
 
     const Concession=props.Concession_Def;
     const BasicFee=props.BasicFee_Def;
+    const PROVIDER_CODE=props.PROVIDER_CODE;
+
+    let C;
+
+    (PROVIDER_CODE=="0456" || PROVIDER_CODE=="2417") ? C=Concession : C=0
  
       let TurnAround="";
 
@@ -28,6 +33,18 @@ export default function BasicFee(props) {
     T_AMOUNT= <Text style={{fontSize:"10"}}>{(0.25*BasicFee).toFixed(2)}</Text>;
     BasicTTL+=0.25*BasicFee;
     };
+
+    ///////// CONCESSION
+    let TC
+   let TC_DESCRIPTION
+   let TC_AMOUNT
+   if (C!=0) { TC=<Text style={{fontSize:"10", marginLeft:"30"}}>- Airport Concession Fee </Text>;
+    TC_DESCRIPTION= <Text style={{fontSize:"10"}}> -------------------------</Text>;
+    TC_AMOUNT= <Text style={{fontSize:"10"}}>{(+C).toFixed(2)}</Text>;
+    BasicTTL+=C;
+    };
+
+    ////////////////////
     
     BasicTTL = Math.floor(BasicTTL * 100) / 100;
     props.BasicTTL(BasicTTL);
@@ -42,18 +59,21 @@ export default function BasicFee(props) {
         <Text style={{fontSize:"10", marginLeft:"30"}}>- Basic Fee</Text>
       
         {/* <Text style={{fontSize:"10", marginLeft:"30"}}>- Airport Concession Fee </Text> */}
+        {TC}
         {T} 
       </View>
       <View style={{ flex: 2}}>
         <Text style={{fontSize:"10"}}> -------------------------</Text>
         
         {/* <Text style={{fontSize:"10"}}> -------------------------</Text> */}
+        {TC_DESCRIPTION}
         {T_DESCRIPTION}
       </View>
       <View style={{ flex: 1}}>
       <Text style={{fontSize:"10"}}>{(+BasicFee).toFixed(2)} </Text>
        
-        {/* <Text style={{fontSize:"10"}}>{(+Concession).toFixed(2)}</Text> */}
+        {/* <Text style={{fontSize:"10"}}>{(+C).toFixed(2)}</Text> */}
+        {TC_AMOUNT}
         {T_AMOUNT}
       </View>
 

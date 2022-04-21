@@ -18,6 +18,7 @@ export default function Surcharges(props) {
   
     const M=props.B ;
     const BasicFee=props.BasicFee_Def;
+    const DIFF_TIME=props.DIFF_TIME;
 
   let Delay="";
   let D_WEEK;
@@ -298,6 +299,12 @@ export default function Surcharges(props) {
     };
     if ( ((AA>"06:00:00" &  AA<"09:00:00" & AA<"16:00:00" ) ||  (AD>"06:00:00" &  AD<"09:00:00" & AD<"16:00:00" )) & ( (AA>"09:00:00" &  AA>"16:00:00" & AA<"21:00:00" ) ||  (AD>"09:00:00" &  AD>"16:00:00" & AD<"21:00:00" )) ) { T4=<Text style={{fontSize:"10", marginLeft:"30"}}>- Out of Opening hours</Text>;
     T4_DESCRIPTION= <Text style={{fontSize:"10"}}>"06h-09h & 16h-21h"</Text>;
+    T4_AMOUNT= <Text style={{fontSize:"10"}}>{(0.25*BasicFee).toFixed(2)}</Text>;
+    Surcharge_ttl +=(0.25*BasicFee);
+    compteur+=1;
+    };
+    if ( (AA>"21:00:00" )|| (AA<"06:00:00" &  AA>"00:00:00" )  ||  (AD>"21:00:00" )|| (AD<"06:00:00" &  AD>"00:00:00" )  ) { T4=<Text style={{fontSize:"10", marginLeft:"30"}}>- Night OPS</Text>;
+    T4_DESCRIPTION= <Text style={{fontSize:"10"}}>"21h-06h"</Text>;
     T4_AMOUNT= <Text style={{fontSize:"10"}}>{(0.25*BasicFee).toFixed(2)}</Text>;
     Surcharge_ttl +=(0.25*BasicFee);
     compteur+=1;
