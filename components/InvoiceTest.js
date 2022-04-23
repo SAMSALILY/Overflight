@@ -1261,11 +1261,19 @@ if ((M<=80) && (M>71)){
   Concession_handler=110;
   // Handling=1095;
 }//////////////////////// End 70-80 T *****ROJ
+let ACFT=data[0][0].ACFT;
+if ((M<=80) && (M>71) && (ACFT=="C130" || ACFT=="c130" || ACFT==" c130" || ACFT=="c130 ")){ 
+  Concession=55; 
+  Handling=985;
+  BasicFee=290;
+  Concession_handler=110;
+  // Handling=1095;
+}//////////////////////// End 70-80 T *****ROJ
 /////////////////////////// 230-300 T ******ROJ    
 if ((M<=300) && (M>230)){     
   Concession=55; 
   Handling=2347;
-  BasicFee=400;
+  BasicFee=290;
   Concession_handler=228;
   // Handling=2575;
   
@@ -1591,10 +1599,7 @@ if(CURRENCY=="USD"){
   Handling=Handling*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
   Concession_handler=Concession_handler*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
   Concession=60;
-  // if ( NAT_FLT=="TECH") { 
-  //   Handling=Math.trunc(+(Handling/2)) ;
-  //   Concession_handler=Math.trunc(+(Concession_handler/2)) ;
-  //   } 
+ 
   ////////////////////////// GENERAL PRICING
   let M=B;
   if ((M<=7) && (M>0)){ 
@@ -1701,9 +1706,14 @@ if(CURRENCY=="USD"){
   }
 
   ////////////////////////// END GENERAL PRICING
+  let OPERATOR_CODE=data[0][0].OPERATOR_CODE;
+  if (OPERATOR_CODE=="1268" && PROVIDER_CODE=="0027"){
+    BasicFee=270;
+ }
     /////////////////////////////////
-  TRAVEL=((+TRAVEL)*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL));
-  CREW_ASSIST=(CREW_ASSIST)*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
+ 
+  // TRAVEL=((+TRAVEL)*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL));
+  // CREW_ASSIST=(CREW_ASSIST)*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
   
   PUSH_PRICE=PUSH_PRICE*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);
   GPU_PRICE=GPU_PRICE*(Rates.EXCHANGE_EUR_SELL)/(Rates.EXCHANGE_USD_SELL);

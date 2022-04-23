@@ -58,7 +58,7 @@ export default function AddServices(props) {
     // T2_AMOUNT= <Text style={{fontSize:"10"}}>{TRAVEL.toFixed(2)} </Text>;
     T2_AMOUNT= <Text style={{fontSize:"10"}}>{(TRAVEL).toFixed(2)} </Text>;
     Additional+=TRAVEL;
-    };
+    }; 
 
     let T3;
     let T3_DESCRIPTION;
